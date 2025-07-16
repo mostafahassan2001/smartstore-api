@@ -15,3 +15,6 @@ Route::get('/docs', function () {
 
     return view('vendor.l5-swagger.index');
 });
+Route::get('/storage/api-docs/api-docs.json', function () {
+    return response()->file(storage_path('api-docs/api-docs.json'));
+});
