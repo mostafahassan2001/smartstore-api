@@ -93,7 +93,7 @@ return [
 
         // ✅ نغير الـ HOST لـ https
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'https://proud-celebration-production-82f8.up.railway.app'),
+            'L5_SWAGGER_CONST_HOST' =>  'https://proud-celebration-production-82f8.up.railway.app',
         ],
     ],
 
