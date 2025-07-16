@@ -3,29 +3,29 @@
 return [
 
     'default' => 'default',
-'documentations' => [
-    'default' => [
-        'api' => [
-            'title' => 'Smart Store API',
-        ],
 
-        'routes' => [
-            'api' => 'api/documentation', // ✅ مهم جداً
-            'docs' => 'docs', // ✅ الواجهة الرسومية
-        ],
+    'documentations' => [
+        'default' => [
+            'api' => [
+                'title' => 'Smart Store API',
+            ],
 
-        'paths' => [
-            'use_absolute_path' => true,
-            'swagger_ui_assets_path' => 'vendor/swagger-api/swagger-ui/dist/',
-            'docs' => storage_path('api-docs'), // ✅ الأهم: خليه storage/api-docs
-            'docs_json' => 'api-docs.json',
-            'annotations' => [
-                base_path('app'),
+            'routes' => [
+                'api' => 'api/documentation',
+                'docs' => 'docs',
+            ],
+
+            'paths' => [
+                'use_absolute_path' => true,
+                'swagger_ui_assets_path' => 'vendor/swagger-api/swagger-ui/dist/',
+                'docs' => storage_path('api-docs'),
+                'docs_json' => 'api-docs.json',
+                'annotations' => [
+                    base_path('app'),
+                ],
             ],
         ],
     ],
-],
-
 
     'defaults' => [
 
@@ -68,7 +68,10 @@ return [
 
         'generate_always' => true,
         'generate_yaml_copy' => false,
-        'proxy' => false,
+
+        // ✅ نفعّل البروكسي علشان يستعمل HTTPS بدل HTTP
+        'proxy' => true,
+
         'additional_config_url' => null,
         'operations_sort' => null,
         'validator_url' => null,
@@ -87,10 +90,11 @@ return [
             ],
         ],
 
+        // ✅ نغير الـ HOST لـ https
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://localhost:8000'),
+            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'https://proud-celebration-production-82f8.up.railway.app'),
         ],
     ],
-    'generate_always' => true,
 
+    'generate_always' => true,
 ];
