@@ -69,6 +69,7 @@ return [
         'generate_always' => true,
         'generate_yaml_copy' => false,
 
+        
         // ✅ نفعّل البروكسي علشان يستعمل HTTPS بدل HTTP
         'proxy' => true,
 
