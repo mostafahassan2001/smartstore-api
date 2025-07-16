@@ -16,7 +16,7 @@ return [
             ],
 
             'paths' => [
-                'use_absolute_path' => true,
+                'use_absolute_path' => false,
                 'swagger_ui_assets_path' => 'vendor/swagger-api/swagger-ui/dist/',
                 'docs' => storage_path('api-docs'),
                 'docs_json' => 'api-docs.json',
