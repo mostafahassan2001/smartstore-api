@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
 
 Route::get('/', function () {
-    return view('welcome');
+     return redirect('/docs');
 });
 Route::get('/docs', function () {
     $swaggerView = resource_path('views/vendor/l5-swagger/index.blade.php');
