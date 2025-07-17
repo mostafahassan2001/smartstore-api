@@ -286,14 +286,19 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
+                                    "firstname",
+                                    "lastname",
                                     "email",
                                     "password"
                                 ],
                                 "properties": {
-                                    "name": {
+                                    "firstname": {
                                         "type": "string",
-                                        "example": "Mostafa Hassan"
+                                        "example": "Mostafa"
+                                    },
+                                    "lastname": {
+                                        "type": "string",
+                                        "example": "Hassan"
                                     },
                                     "email": {
                                         "type": "string",
