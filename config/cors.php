@@ -1,5 +1,5 @@
 <?php
-
+// cors
 return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
