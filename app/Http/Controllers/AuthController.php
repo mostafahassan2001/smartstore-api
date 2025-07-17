@@ -71,20 +71,29 @@ public function register(Request $request)
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
- public function login(Request $request)
+public function login(Request $request)
 {
-    $credentials = $request->only('email', 'password');
+    try {
+        $credentials = $request->only('email', 'password');
 
-    if (!$token = auth()->attempt($credentials)) {
-        return response()->json(['error' => 'Unauthorized'], 401);
+        if (!$token = auth()->attempt($credentials)) {
+            \Log::error('Login failed. Invalid credentials: ', $credentials);
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+    } catch (\Throwable $e) {
+        \Log::error('Login Error: ' . $e->getMessage(), [
+            'trace' => $e->getTraceAsString()
+        ]);
+        return response()->json(['error' => 'Internal Server Error'], 500);
     }
-
-    return response()->json([
-        'access_token' => $token,
-        'token_type' => 'bearer',
-        'expires_in' => auth()->factory()->getTTL() * 60
-    ]);
 }
+
     /**
      * @OA\Post(
      *     path="/api/logout",
