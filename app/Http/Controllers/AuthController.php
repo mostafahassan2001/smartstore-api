@@ -13,43 +13,46 @@ use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
- /**
- * @OA\Post(
- *     path="/api/register",
- *     tags={"Auth"},
- *     summary="Register a new user",
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             required={"firstname", "lastname", "email", "password"},
- *             @OA\Property(property="firstname", type="string", example="Mostafa"),
- *             @OA\Property(property="lastname", type="string", example="Hassan"),
- *             @OA\Property(property="email", type="string", example="mostafa@example.com"),
- *             @OA\Property(property="password", type="string", example="password123")
- *         )
- *     ),
- *     @OA\Response(response=201, description="User registered")
- * )
- */
+    /**
+     * @OA\Post(
+     *     path="/api/register",
+     *     tags={"Auth"},
+     *     summary="Register a new user",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "email", "password"},
+     *             @OA\Property(property="name", type="string", example="Mostafa Hassan"),
+     *             @OA\Property(property="email", type="string", example="mostafa@example.com"),
+     *             @OA\Property(property="password", type="string", example="password123")
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="User registered")
+     * )
+     */
+   use Illuminate\Support\Facades\Hash;
+
 public function register(Request $request)
 {
-    $data = $request->validate([
+    $validated = $request->validate([
         'firstname' => 'required|string|max:255',
-        'lastname'  => 'required|string|max:255',
-        'email'     => 'required|string|email|unique:users',
-        'password'  => 'required|string|min:6',
+        'lastname' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:6',
     ]);
 
-    $user = User::create([
-        'firstname' => $data['firstname'],
-        'lastname'  => $data['lastname'],
-        'email'     => $data['email'],
-        'password'  => $data['password'],
-        'email_verification_code' => rand(100000, 999999),
-    ]);
+    $validated['password'] = Hash::make($validated['password']); // تشفير الباسورد
 
-    return response()->json(['message' => 'User registered successfully'], 201);
+    $user = User::create($validated);
+
+    $token = auth()->login($user);
+
+    return response()->json([
+        'message' => 'User registered successfully',
+        'token' => $token,
+    ]);
 }
+
 
     /**
      * @OA\Post(
@@ -252,7 +255,7 @@ public function refreshToken()
         $user = User::where('email', $data['email'])->first();
         if (!$user) return response()->json(['message' => 'User not found'], 404);
 
-        $user->password = $data['new_password'];
+        $user->password = Hash::make($data['new_password']);
         $user->save();
 
         return response()->json(['message' => 'Password updated successfully']);
