@@ -68,25 +68,30 @@ public function register(Request $request)
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
-   public function login(Request $request)
+public function login(Request $request)
 {
-    $credentials = $request->only('email', 'password');
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-    // تحقق أولاً من وجود الإيميل
-    $user = \App\Models\User::where('email', $credentials['email'])->first();
+    $user = User::where('email', $request->email)->first();
 
     if (!$user) {
         return response()->json(['error' => 'Email not found'], 401);
     }
 
-    // ثم حاول تسجيل الدخول
-    if (!auth()->attempt($credentials)) {
+    if (!Hash::check($request->password, $user->password)) {
         return response()->json(['error' => 'Invalid password'], 401);
     }
 
-    $token = auth()->attempt($credentials);
+    // إصدار التوكن لو الإيميل والباسورد صح
+    $token = $user->createToken('auth_token')->plainTextToken;
 
-    return response()->json(['token' => $token]);
+    return response()->json([
+        'token' => $token,
+        'user' => $user
+    ]);
 }
 
 
