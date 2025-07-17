@@ -13,46 +13,43 @@ use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
-    /**
-     * @OA\Post(
-     *     path="/api/register",
-     *     tags={"Auth"},
-     *     summary="Register a new user",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"name", "email", "password"},
-     *             @OA\Property(property="name", type="string", example="Mostafa Hassan"),
-     *             @OA\Property(property="email", type="string", example="mostafa@example.com"),
-     *             @OA\Property(property="password", type="string", example="password123")
-     *         )
-     *     ),
-     *     @OA\Response(response=201, description="User registered")
-     * )
-     */
-    public function register(Request $request)
-    {
-        $data = $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
+ /**
+ * @OA\Post(
+ *     path="/api/register",
+ *     tags={"Auth"},
+ *     summary="Register a new user",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"firstname", "lastname", "email", "password"},
+ *             @OA\Property(property="firstname", type="string", example="Mostafa"),
+ *             @OA\Property(property="lastname", type="string", example="Hassan"),
+ *             @OA\Property(property="email", type="string", example="mostafa@example.com"),
+ *             @OA\Property(property="password", type="string", example="password123")
+ *         )
+ *     ),
+ *     @OA\Response(response=201, description="User registered")
+ * )
+ */
+public function register(Request $request)
+{
+    $data = $request->validate([
+        'firstname' => 'required|string|max:255',
+        'lastname'  => 'required|string|max:255',
+        'email'     => 'required|string|email|unique:users',
+        'password'  => 'required|string|min:6',
+    ]);
 
-        $user = User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'password' => bcrypt($data['password']),
-            'email_verification_code' => rand(100000, 999999),
-        ]);
+    $user = User::create([
+        'firstname' => $data['firstname'],
+        'lastname'  => $data['lastname'],
+        'email'     => $data['email'],
+        'password'  => bcrypt($data['password']),
+        'email_verification_code' => rand(100000, 999999),
+    ]);
 
-        // Send email code
-        Mail::raw("Your verification code is: {$user->email_verification_code}", function ($m) use ($user) {
-            $m->to($user->email)->subject('Verify Your Email');
-        });
-
-        $token = JWTAuth::fromUser($user);
-        return response()->json(['user' => $user, 'token' => $token], 201);
-    }
+    return response()->json(['message' => 'User registered successfully'], 201);
+}
 
     /**
      * @OA\Post(
