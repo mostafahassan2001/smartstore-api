@@ -30,7 +30,7 @@ class AuthController extends Controller
      *     @OA\Response(response=201, description="User registered")
      * )
      */
-   use Illuminate\Support\Facades\Hash;
+
 
 public function register(Request $request)
 {
