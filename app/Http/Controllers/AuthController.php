@@ -44,7 +44,7 @@ public function register(Request $request)
         'firstname' => $data['firstname'],
         'lastname'  => $data['lastname'],
         'email'     => $data['email'],
-        'password'  => bcrypt($data['password']),
+        'password'  => $data['password'],
         'email_verification_code' => rand(100000, 999999),
     ]);
 
@@ -68,32 +68,16 @@ public function register(Request $request)
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
-public function login(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
-    $user = User::where('email', $request->email)->first();
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
 
-    if (!$user) {
-        return response()->json(['error' => 'Email not found'], 401);
+        return response()->json(['token' => $token]);
     }
-
-    if (!Hash::check($request->password, $user->password)) {
-        return response()->json(['error' => 'Invalid password'], 401);
-    }
-
-    // إصدار التوكن لو الإيميل والباسورد صح
-    $token = $user->createToken('auth_token')->plainTextToken;
-
-    return response()->json([
-        'token' => $token,
-        'user' => $user
-    ]);
-}
-
 
     /**
      * @OA\Post(
@@ -268,7 +252,7 @@ public function refreshToken()
         $user = User::where('email', $data['email'])->first();
         if (!$user) return response()->json(['message' => 'User not found'], 404);
 
-        $user->password = Hash::make($data['new_password']);
+        $user->password = $data['new_password'];
         $user->save();
 
         return response()->json(['message' => 'Password updated successfully']);
