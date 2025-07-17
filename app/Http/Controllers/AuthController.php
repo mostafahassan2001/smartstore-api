@@ -73,25 +73,18 @@ public function register(Request $request)
      */
 public function login(Request $request)
 {
-    try {
-        $credentials = $request->only('email', 'password');
+    $user = User::where('email', $request->email)->first();
 
-        if (!$token = auth()->attempt($credentials)) {
-            \Log::error('Login failed. Invalid credentials: ', $credentials);
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
-    } catch (\Throwable $e) {
-        \Log::error('Login Error: ' . $e->getMessage(), [
-            'trace' => $e->getTraceAsString()
-        ]);
-        return response()->json(['error' => 'Internal Server Error'], 500);
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        return response()->json(['message' => 'Invalid credentials'], 401);
     }
+
+    $token = $user->createToken('API Token')->plainTextToken;
+
+    return response()->json([
+        'access_token' => $token,
+        'token_type' => 'Bearer',
+    ]);
 }
 
     /**
