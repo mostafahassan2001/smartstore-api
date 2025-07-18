@@ -286,19 +286,14 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "firstname",
-                                    "lastname",
+                                    "name",
                                     "email",
                                     "password"
                                 ],
                                 "properties": {
-                                    "firstname": {
+                                    "name": {
                                         "type": "string",
-                                        "example": "Mostafa"
-                                    },
-                                    "lastname": {
-                                        "type": "string",
-                                        "example": "Hassan"
+                                        "example": "Mostafa Hassan"
                                     },
                                     "email": {
                                         "type": "string",
@@ -2667,6 +2662,280 @@
                     }
                 }
             }
+        },
+        "/api/SubCategories": {
+            "get": {
+                "tags": [
+                    "SubCategories"
+                ],
+                "summary": "Get all SubCategoriess",
+                "description": "Get all SubCategories",
+                "operationId": "777fa3fcab9e713c0f9ef17679d519c8",
+                "responses": {
+                    "200": {
+                        "description": "List of SubCategories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name_en": {
+                                                "type": "string",
+                                                "example": "Men"
+                                            },
+                                            "name_ar": {
+                                                "type": "string",
+                                                "example": "رجالي"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "SubCategories"
+                ],
+                "summary": "Create new SubCategories",
+                "description": "Store new SubCategories",
+                "operationId": "88391300e5f68709f82b8d403ca14016",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name_en",
+                                    "name_ar"
+                                ],
+                                "properties": {
+                                    "name_en": {
+                                        "type": "string"
+                                    },
+                                    "name_ar": {
+                                        "type": "string"
+                                    },
+                                    "description_en": {
+                                        "type": "string"
+                                    },
+                                    "description_ar": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "boolean"
+                                    },
+                                    "logo": {
+                                        "type": "file"
+                                    },
+                                    "category_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "SubCategories created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name_en": {
+                                            "type": "string"
+                                        },
+                                        "logo": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/SubCategories/{id}": {
+            "get": {
+                "tags": [
+                    "SubCategories"
+                ],
+                "summary": "Get single SubCategories",
+                "description": "Get SubCategories by ID",
+                "operationId": "bee6289215e7d443a95dbc9562e61c6d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SubCategories details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name_en": {
+                                            "type": "string",
+                                            "example": "Men"
+                                        },
+                                        "name_ar": {
+                                            "type": "string",
+                                            "example": "رجالي"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "SubCategories not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "SubCategories not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "SubCategories"
+                ],
+                "summary": "Update SubCategories",
+                "description": "Update SubCategories",
+                "operationId": "6710c9e5dfb46fb6f160d3e6e7c1b3b6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "name_en": {
+                                        "type": "string"
+                                    },
+                                    "name_ar": {
+                                        "type": "string"
+                                    },
+                                    "description_en": {
+                                        "type": "string"
+                                    },
+                                    "description_ar": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "boolean"
+                                    },
+                                    "logo": {
+                                        "type": "file"
+                                    },
+                                    "category_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SubCategories updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "SubCategories updated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "SubCategories"
+                ],
+                "summary": "Delete SubCategories",
+                "description": "Delete SubCategories",
+                "operationId": "68a6ba5f87d1b2091f6d4dca81fa8420",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SubCategories deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "SubCategories deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -3077,6 +3346,10 @@
         {
             "name": "Reviews",
             "description": "Reviews"
+        },
+        {
+            "name": "SubCategories",
+            "description": "SubCategories"
         }
     ]
 }
