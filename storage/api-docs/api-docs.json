@@ -2936,6 +2936,64 @@
                     }
                 }
             }
+        },
+        "/api/SubCategories/category/{categoryId}": {
+            "get": {
+                "tags": [
+                    "SubCategories"
+                ],
+                "summary": "Get SubCategories by category ID",
+                "description": "Get SubCategories by category ID (paginated)",
+                "operationId": "7baf0060204bd6fe3e4bfe0795fc476b",
+                "parameters": [
+                    {
+                        "name": "categoryId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of SubCategories by category",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "pageNumber": {
+                                            "type": "integer"
+                                        },
+                                        "pageSize": {
+                                            "type": "integer"
+                                        },
+                                        "totalPageNumber": {
+                                            "type": "integer"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SubCategories"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -3230,6 +3288,29 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-07-16T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "SubCategories": {
+                "title": "Sub Category",
+                "required": [
+                    "id",
+                    "name",
+                    "category_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Shirts"
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": 2
                     }
                 },
                 "type": "object"

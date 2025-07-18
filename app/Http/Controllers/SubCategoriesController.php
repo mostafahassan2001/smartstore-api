@@ -5,6 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\SubCategories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+/**
+ * @OA\Schema(
+ *     schema="SubCategories",
+ *     type="object",
+ *     title="Sub Category",
+ *     required={"id", "name", "category_id"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Shirts"),
+ *     @OA\Property(property="category_id", type="integer", example=2)
+ * )
+ */
 
 class SubCategoriesController extends Controller
 {
@@ -89,7 +100,7 @@ class SubCategoriesController extends Controller
      *                 @OA\Property(property="description_en", type="string"),
      *                 @OA\Property(property="description_ar", type="string"),
      *                 @OA\Property(property="status", type="boolean"),
-     *                 @OA\Property(property="logo", type="file")
+     *                 @OA\Property(property="logo", type="file"),
      *   @OA\Property(property="category_id", type="integer"),
      *             )
      *         )
@@ -143,7 +154,7 @@ class SubCategoriesController extends Controller
      *                 @OA\Property(property="description_en", type="string"),
      *                 @OA\Property(property="description_ar", type="string"),
      *                 @OA\Property(property="status", type="boolean"),
-     *                 @OA\Property(property="logo", type="file")
+     *                 @OA\Property(property="logo", type="file"),
      *   @OA\Property(property="category_id", type="integer"),
      *             )
      *         )
@@ -214,4 +225,47 @@ class SubCategoriesController extends Controller
         $SubCategories->delete();
         return response()->json(['message' => 'SubCategories deleted']);
     }
+     /**
+ * Get SubCategories by category ID (paginated)
+ *
+ * @OA\Get(
+ *     path="/api/SubCategories/category/{categoryId}",
+ *     summary="Get SubCategories by category ID",
+ *     tags={"SubCategories"},
+ *     @OA\Parameter(
+ *         name="categoryId",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=1)
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Paginated list of SubCategories by category",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="pageNumber", type="integer"),
+ *             @OA\Property(property="pageSize", type="integer"),
+ *             @OA\Property(property="totalPageNumber", type="integer"),
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/SubCategories"))
+ *         )
+ *     )
+ * )
+ */
+public function getByCategory($categoryId)
+{
+    $SubCategories = SubCategories::where('category_id', $categoryId)->paginate(10);
+
+    return response()->json([
+        'pageNumber' => $SubCategories->currentPage(),
+        'pageSize' => $SubCategories->perPage(),
+        'totalPageNumber' => $SubCategories->lastPage(),
+        'data' => $SubCategories->items(),
+    ]);
+}
+
 }
