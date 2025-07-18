@@ -73,18 +73,36 @@ public function register(Request $request)
      */
 public function login(Request $request)
 {
-    $user = User::where('email', $request->email)->first();
+    try {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
 
-    if (! $user || ! Hash::check($request->password, $user->password)) {
-        return response()->json(['message' => 'Invalid credentials'], 401);
+        $user = User::where('email', $request->email)->first();
+
+        // تحقق من وجود المستخدم وكلمة المرور
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
+        // إصدار التوكن للمستخدم
+        if (!$token = Auth::login($user)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => Auth::factory()->getTTL() * 60,
+            'user' => $user
+        ]);
+    } catch (\Throwable $e) {
+        \Log::error('Login Error: ' . $e->getMessage(), [
+            'trace' => $e->getTraceAsString()
+        ]);
+        return response()->json(['error' => 'Internal Server Error'], 500);
     }
-
-    $token = $user->createToken('API Token')->plainTextToken;
-
-    return response()->json([
-        'access_token' => $token,
-        'token_type' => 'Bearer',
-    ]);
 }
 
     /**
