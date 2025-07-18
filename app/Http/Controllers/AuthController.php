@@ -79,20 +79,19 @@ public function login(Request $request)
             'password' => 'required'
         ]);
 
-        $user = \App\Models\User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        if (! $token = Auth::login($user)) {
-            return response()->json(['error' => 'Could not create token'], 500);
-        }
+        // إصدار التوكن باستخدام JWTAuth
+        $token = JWTAuth::fromUser($user);
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     } catch (\Throwable $e) {
         \Log::error('Login Error: ' . $e->getMessage(), [
@@ -101,6 +100,7 @@ public function login(Request $request)
         return response()->json(['error' => 'Internal Server Error'], 500);
     }
 }
+
 
     /**
      * @OA\Post(
