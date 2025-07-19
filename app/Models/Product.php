@@ -38,6 +38,7 @@ class Product extends Model
     'price',
     'status',
     'category_id',
+    'subcategory_id',
     'brand_id',
 ];
 

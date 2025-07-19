@@ -2359,6 +2359,9 @@
                                     "category_id": {
                                         "type": "integer"
                                     },
+                                    "subcategory_id": {
+                                        "type": "integer"
+                                    },
                                     "brand_id": {
                                         "type": "integer"
                                     },
@@ -2471,6 +2474,9 @@
                                         "type": "boolean"
                                     },
                                     "category_id": {
+                                        "type": "integer"
+                                    },
+                                    "subcategory_id": {
                                         "type": "integer"
                                     },
                                     "brand_id": {
@@ -3655,6 +3661,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Address",
+            "description": "Address"
+        },
         {
             "name": "Auth",
             "description": "Auth"
