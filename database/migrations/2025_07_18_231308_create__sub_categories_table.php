@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('_sub_categories', function (Blueprint $table) {
+        Schema::create('subcategories', function (Blueprint $table) {
                 $table->id();
         
         $table->string('name_en');
         $table->string('name_ar');
-        $table->text('description_en')->nullable();
-        $table->text('description_ar')->nullable();
+        $table->text('description_en');
+        $table->text('description_ar');
         $table->string('logo')->nullable(); // مسار الصورة
         $table->boolean('status')->default(true);
           $table->foreignId('category_id')->constrained()->onDelete('cascade');

@@ -16,8 +16,8 @@ return new class extends Migration
         
         $table->string('name_en');
         $table->string('name_ar');
-        $table->text('description_en')->nullable();
-        $table->text('description_ar')->nullable();
+        $table->text('description_en');
+        $table->text('description_ar');
         $table->string('logo')->nullable(); // مسار الصورة
         $table->boolean('status')->default(true);
   $table->timestamps();

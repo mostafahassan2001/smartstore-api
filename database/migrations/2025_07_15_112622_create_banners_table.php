@@ -17,10 +17,10 @@ return new class extends Migration
         $table->string('title');
         $table->string('title_ar');
 
-        $table->text('description')->nullable();
-        $table->text('description_ar')->nullable();
+        $table->text('description');
+        $table->text('description_ar');
 
-        $table->string('image'); // رابط أو اسم الصورة (يُرفع كـ string وليس binary مباشرة)
+        $table->string('image')->nullable(); // رابط أو اسم الصورة (يُرفع كـ string وليس binary مباشرة)
         $table->string('link_url')->nullable();
 
         $table->integer('order')->nullable(); // ترتيب العرض

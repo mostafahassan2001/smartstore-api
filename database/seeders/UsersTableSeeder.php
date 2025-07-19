@@ -13,7 +13,7 @@ public function run()
     \App\Models\User::create([
             'firstname' => 'Admin',
             'lastname' => 'User',
-            'email' => 'admin@test.com',
+            'email' => 'admin@SmartStoreAPI.com',
             'email_verified_at' => now(),
             'password' => Hash::make('admin@123'),
             'remember_token' => Str::random(10), //
