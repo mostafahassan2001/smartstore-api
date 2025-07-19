@@ -7,11 +7,20 @@ use App\Models\Product;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
     /**
-     * Get all items in the cart
+     * @OA\Get(
+     *     path="/api/cart",
+     *     summary="Get all items in the cart",
+     *     tags={"Cart"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of cart items"
+     *     )
+     * )
      */
     public function index()
     {
@@ -24,7 +33,23 @@ class CartController extends Controller
     }
 
     /**
-     * Add a product to the cart
+     * @OA\Post(
+     *     path="/api/cart",
+     *     summary="Add a product to the cart",
+     *     tags={"Cart"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"product_id", "quantity"},
+     *             @OA\Property(property="product_id", type="integer", example=1),
+     *             @OA\Property(property="quantity", type="integer", example=2)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Item added to cart"
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -55,7 +80,28 @@ class CartController extends Controller
     }
 
     /**
-     * Update quantity of a cart item
+     * @OA\Put(
+     *     path="/api/cart/{id}",
+     *     summary="Update quantity of a cart item",
+     *     tags={"Cart"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"quantity"},
+     *             @OA\Property(property="quantity", type="integer", example=3)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cart item updated"
+     *     )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -76,7 +122,21 @@ class CartController extends Controller
     }
 
     /**
-     * Remove item from cart
+     * @OA\Delete(
+     *     path="/api/cart/{id}",
+     *     summary="Remove item from cart",
+     *     tags={"Cart"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Item removed from cart"
+     *     )
+     * )
      */
     public function destroy($id)
     {
@@ -90,7 +150,15 @@ class CartController extends Controller
     }
 
     /**
-     * Clear the cart
+     * @OA\Post(
+     *     path="/api/cart/clear",
+     *     summary="Clear the entire cart",
+     *     tags={"Cart"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cart cleared"
+     *     )
+     * )
      */
     public function clear()
     {
@@ -101,7 +169,26 @@ class CartController extends Controller
     }
 
     /**
-     * Apply a discount coupon to the cart
+     * @OA\Post(
+     *     path="/api/cart/apply-coupon",
+     *     summary="Apply a discount coupon to the cart",
+     *     tags={"Cart"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"code"},
+     *             @OA\Property(property="code", type="string", example="DISCOUNT10")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Coupon applied"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid or expired coupon"
+     *     )
+     * )
      */
     public function applyDiscount(Request $request)
     {
@@ -133,7 +220,15 @@ class CartController extends Controller
     }
 
     /**
-     * Remove the applied discount coupon from the cart
+     * @OA\Post(
+     *     path="/api/cart/remove-coupon",
+     *     summary="Remove applied discount coupon from the cart",
+     *     tags={"Cart"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Coupon removed"
+     *     )
+     * )
      */
     public function removeDiscount()
     {
@@ -143,7 +238,20 @@ class CartController extends Controller
     }
 
     /**
-     * Get cart total (with or without discount)
+     * @OA\Get(
+     *     path="/api/cart/total",
+     *     summary="Get cart subtotal, discount, and total",
+     *     tags={"Cart"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cart total",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="subtotal", type="number", example=150.00),
+     *             @OA\Property(property="discount", type="number", example=15.00),
+     *             @OA\Property(property="total", type="number", example=135.00)
+     *         )
+     *     )
+     * )
      */
     public function total()
     {

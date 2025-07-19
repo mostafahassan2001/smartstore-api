@@ -5,13 +5,57 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+/**
+ * @OA\Schema(
+ *     schema="Category",
+ *     type="object",
+ *     title="Category",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Clothing"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-01-01T00:00:00Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-01-01T00:00:00Z")
+ * )
+ */
 
 class CategoryController extends Controller
 {
     /**
-     * Get all categories with optional pagination
+     * Get all categories
+     *
+      * @OA\Get(
+ *     path="/api/categories",
+ *     summary="Get all categories",
+ *     tags={"Categories"},
+ *     @OA\Parameter(
+ *         name="pageSize",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="pageNumber",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Paginated category list",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="pageNumber", type="integer"),
+ *             @OA\Property(property="pageSize", type="integer"),
+ *             @OA\Property(property="total", type="integer"),
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="array",
+ *                 @OA\Items(ref="#/components/schemas/Category")
+ *             )
+ *         )
+ *     )
+ * )
+
      */
-    public function index(Request $request)
+   public function index(Request $request)
     {
         $pageSize = $request->input('pageSize', 10);
         $pageNumber = $request->input('pageNumber', 1);
@@ -28,6 +72,34 @@ class CategoryController extends Controller
 
     /**
      * Get category by ID
+     *
+     * @OA\Get(
+     *     path="/api/categories/{id}",
+     *     summary="Get single category",
+     *     tags={"Categories"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Category details",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="name_en", type="string", example="Men"),
+     *             @OA\Property(property="name_ar", type="string", example="رجالي")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Category not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Category not found")
+     *         )
+     *     )
+     * )
      */
     public function show($id)
     {
@@ -35,22 +107,51 @@ class CategoryController extends Controller
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);
         }
-
         return response()->json($category);
     }
 
     /**
-     * Create new category
+     * Store new category
+     *
+     * @OA\Post(
+     *     path="/api/categories",
+     *     summary="Create new category",
+     *     tags={"Categories"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"name_en", "name_ar"},
+     *                 @OA\Property(property="name_en", type="string"),
+     *                 @OA\Property(property="name_ar", type="string"),
+     *                 @OA\Property(property="description_en", type="string"),
+     *                 @OA\Property(property="description_ar", type="string"),
+     *                 @OA\Property(property="status", type="boolean"),
+     *                 @OA\Property(property="logo", type="file")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Category created",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer"),
+     *             @OA\Property(property="name_en", type="string"),
+     *             @OA\Property(property="logo", type="string")
+     *         )
+     *     )
+     * )
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name_en'        => 'required|string',
-            'name_ar'        => 'required|string',
-            'description_en' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'logo'           => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
-            'status'         => 'nullable|boolean',
+            'name_en' => 'required|string',
+            'name_ar' => 'required|string',
+            'description_en' => 'required|string',
+            'description_ar' => 'required|string',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'status' => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -63,6 +164,34 @@ class CategoryController extends Controller
 
     /**
      * Update category
+     *
+     * @OA\Put(
+     *     path="/api/categories/{id}",
+     *     summary="Update category",
+     *     tags={"Categories"},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="name_en", type="string"),
+     *                 @OA\Property(property="name_ar", type="string"),
+     *                 @OA\Property(property="description_en", type="string"),
+     *                 @OA\Property(property="description_ar", type="string"),
+     *                 @OA\Property(property="status", type="boolean"),
+     *                 @OA\Property(property="logo", type="file")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Category updated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Category updated")
+     *         )
+     *     )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -72,12 +201,12 @@ class CategoryController extends Controller
         }
 
         $validated = $request->validate([
-            'name_en'        => 'required|string',
-            'name_ar'        => 'required|string',
+            'name_en' => 'required|string',
+            'name_ar' => 'required|string',
             'description_en' => 'required|string',
             'description_ar' => 'required|string',
-            'logo'           => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
-            'status'         => 'nullable|boolean',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'status' => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -93,6 +222,18 @@ class CategoryController extends Controller
 
     /**
      * Delete category
+     *
+     * @OA\Delete(
+     *     path="/api/categories/{id}",
+     *     summary="Delete category",
+     *     tags={"Categories"},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Category deleted",
+     *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Category deleted"))
+     *     )
+     * )
      */
     public function destroy($id)
     {

@@ -4,6 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use Illuminate\Http\Request;
+/**
+ * @OA\Schema(
+ *     schema="Address",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="user_id", type="integer", example=5),
+ *     @OA\Property(property="country", type="string", example="Egypt"),
+ *     @OA\Property(property="city", type="string", example="Cairo"),
+ *     @OA\Property(property="street", type="string", example="El Tahrir"),
+ *     @OA\Property(property="building_number", type="string", example="12"),
+ *     @OA\Property(property="postal_code", type="string", example="12345")
+ * )
+ */
 
 class AddressController extends Controller
 {
