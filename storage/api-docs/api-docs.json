@@ -3662,8 +3662,8 @@
     },
     "tags": [
         {
-            "name": "Address",
-            "description": "Address"
+            "name": "address",
+            "description": "address"
         },
         {
             "name": "Auth",
