@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  *     @OA\Property(property="image", type="string", example="products/image.jpg")
  * )
  */
-
+//
 class Product extends Model
 {
    protected $fillable = [
