@@ -15,7 +15,12 @@ class CartController extends Controller
      */
     public function index()
     {
-        return Cart::where('user_id', Auth::id())->with('product')->get();
+        $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
+
+        return response()->json([
+            'message' => 'Cart items retrieved successfully',
+            'data'    => $cartItems
+        ]);
     }
 
     /**
@@ -25,15 +30,28 @@ class CartController extends Controller
     {
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1'
+            'quantity'   => 'required|integer|min:1'
         ]);
 
-        $cart = Cart::updateOrCreate(
-            ['user_id' => Auth::id(), 'product_id' => $validated['product_id']],
-            ['quantity' => \DB::raw("quantity + {$validated['quantity']}")]
-        );
+        $cart = Cart::where('user_id', Auth::id())
+                    ->where('product_id', $validated['product_id'])
+                    ->first();
 
-        return response()->json(['message' => 'Item added to cart', 'data' => $cart]);
+        if ($cart) {
+            $cart->quantity += $validated['quantity'];
+            $cart->save();
+        } else {
+            $cart = Cart::create([
+                'user_id'    => Auth::id(),
+                'product_id' => $validated['product_id'],
+                'quantity'   => $validated['quantity'],
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Item added to cart successfully',
+            'data'    => $cart->load('product')
+        ]);
     }
 
     /**
@@ -45,10 +63,16 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1'
         ]);
 
-        $cart = Cart::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $cart = Cart::where('id', $id)
+                    ->where('user_id', Auth::id())
+                    ->firstOrFail();
+
         $cart->update(['quantity' => $validated['quantity']]);
 
-        return response()->json(['message' => 'Cart item updated']);
+        return response()->json([
+            'message' => 'Cart item updated successfully',
+            'data'    => $cart->load('product')
+        ]);
     }
 
     /**
@@ -56,7 +80,10 @@ class CartController extends Controller
      */
     public function destroy($id)
     {
-        $cart = Cart::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $cart = Cart::where('id', $id)
+                    ->where('user_id', Auth::id())
+                    ->firstOrFail();
+
         $cart->delete();
 
         return response()->json(['message' => 'Item removed from cart']);
@@ -64,22 +91,17 @@ class CartController extends Controller
 
     /**
      * Clear the cart
-     *
-     * DELETE /api/cart/clear
      */
     public function clear()
     {
         Cart::where('user_id', Auth::id())->delete();
-
         session()->forget('cart_coupon');
 
-        return response()->json(['message' => 'Cart cleared']);
+        return response()->json(['message' => 'Cart cleared successfully']);
     }
 
     /**
      * Apply a discount coupon to the cart
-     *
-     * POST /api/cart/discount
      */
     public function applyDiscount(Request $request)
     {
@@ -104,37 +126,36 @@ class CartController extends Controller
 
         session(['cart_coupon' => $coupon]);
 
-        return response()->json(['message' => 'Coupon applied', 'coupon' => $coupon]);
+        return response()->json([
+            'message' => 'Coupon applied successfully',
+            'coupon'  => $coupon
+        ]);
     }
 
     /**
      * Remove the applied discount coupon from the cart
-     *
-     * DELETE /api/cart/discount
      */
     public function removeDiscount()
     {
         session()->forget('cart_coupon');
-        return response()->json(['message' => 'Coupon removed']);
+
+        return response()->json(['message' => 'Coupon removed successfully']);
     }
 
     /**
      * Get cart total (with or without discount)
-     *
-     * GET /api/cart/total
      */
     public function total()
     {
         $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
 
-        $subtotal = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
+        $subtotal = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
 
         $discount = 0;
 
         if (session()->has('cart_coupon')) {
             $coupon = session('cart_coupon');
+
             if ($coupon['discount_type'] === 'percentage') {
                 $discount = ($coupon['discount_value'] / 100) * $subtotal;
             } else {
@@ -145,9 +166,10 @@ class CartController extends Controller
         $total = max($subtotal - $discount, 0);
 
         return response()->json([
+            'message'  => 'Cart total calculated successfully',
             'subtotal' => round($subtotal, 2),
             'discount' => round($discount, 2),
-            'total' => round($total, 2)
+            'total'    => round($total, 2)
         ]);
     }
 }

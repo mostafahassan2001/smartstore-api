@@ -161,15 +161,15 @@ class DiscountController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => 'sometimes|string',
-            'name_ar' => 'sometimes|string',
-            'description' => 'sometimes|string',
-            'description_ar' => 'sometimes|string',
-            'discount_code' => 'sometimes|string|unique:discounts,discount_code,' . $id,
-            'discount_percentage' => 'sometimes|numeric|min:0|max:100',
-            'start_date' => 'sometimes|date',
-            'end_date' => 'sometimes|date|after_or_equal:start_date',
-            'is_active' => 'sometimes|boolean',
+            'name' => 'required|string',
+            'name_ar' => 'required|string',
+            'description' => 'required|string',
+            'description_ar' => 'required|string',
+            'discount_code' => 'required|string|unique:discounts,discount_code,' . $id,
+            'discount_percentage' => 'required|numeric|min:0|max:100',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'is_active' => 'nullable|boolean',
         ]);
 
         $discount->update($validated);

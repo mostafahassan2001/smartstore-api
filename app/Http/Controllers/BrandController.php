@@ -6,51 +6,28 @@ use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-/**
- * @OA\Schema(
- *     schema="Brand",
- *     type="object",
- *     title="Brand",
- *     required={"id", "name_en", "name_ar"},
- *     @OA\Property(property="id", type="integer", example=1),
- *     @OA\Property(property="name_en", type="string", example="Nike"),
- *     @OA\Property(property="name_ar", type="string", example="نايك"),
- *     @OA\Property(property="description_en", type="string", example="American sportswear brand"),
- *     @OA\Property(property="description_ar", type="string", example="علامة تجارية أمريكية للملابس الرياضية"),
- *     @OA\Property(property="logo", type="string", example="brands/nike.png"),
- *     @OA\Property(property="status", type="boolean", example=true),
- *     @OA\Property(property="created_at", type="string", format="date-time"),
- *     @OA\Property(property="updated_at", type="string", format="date-time")
- * )
- */
 class BrandController extends Controller
 {
     /**
-     * @OA\Get(
-     *     path="/api/brands",
-     *     summary="Get all brands",
-     *     tags={"Brands"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="List of brands",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Brand"))
-     *     )
-     * )
+     * Display a paginated list of brands.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Brand::all();
+        $pageSize = $request->input('pageSize', 10);
+        $pageNumber = $request->input('pageNumber', 1);
+
+        $brands = Brand::paginate($pageSize, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'pageNumber' => $brands->currentPage(),
+            'pageSize'   => $brands->perPage(),
+            'total'      => $brands->total(),
+            'data'       => $brands->items(),
+        ]);
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/brands/{id}",
-     *     summary="Get a single brand",
-     *     tags={"Brands"},
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="Brand found", @OA\JsonContent(ref="#/components/schemas/Brand")),
-     *     @OA\Response(response=404, description="Brand not found")
-     * )
+     * Display the specified brand.
      */
     public function show($id)
     {
@@ -58,41 +35,22 @@ class BrandController extends Controller
         if (!$brand) {
             return response()->json(['message' => 'Brand not found'], 404);
         }
-        return $brand;
+
+        return response()->json($brand);
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/brands",
-     *     summary="Create a new brand",
-     *     tags={"Brands"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 required={"name_en", "name_ar"},
-     *                 @OA\Property(property="name_en", type="string"),
-     *                 @OA\Property(property="name_ar", type="string"),
-     *                 @OA\Property(property="description_en", type="string"),
-     *                 @OA\Property(property="description_ar", type="string"),
-     *                 @OA\Property(property="logo", type="file"),
-     *                 @OA\Property(property="status", type="boolean")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(response=201, description="Brand created", @OA\JsonContent(ref="#/components/schemas/Brand"))
-     * )
+     * Store a newly created brand in storage.
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name_en' => 'required|string',
-            'name_ar' => 'required|string',
-            'description_en' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
-            'status' => 'boolean',
+            'name_en'         => 'required|string',
+            'name_ar'         => 'required|string',
+            'description_en'  => 'required|string',
+            'description_ar'  => 'required|string',
+            'logo'            => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'status'          => 'boolean',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -104,27 +62,7 @@ class BrandController extends Controller
     }
 
     /**
-     * @OA\Put(
-     *     path="/api/brands/{id}",
-     *     summary="Update a brand",
-     *     tags={"Brands"},
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property(property="name_en", type="string"),
-     *                 @OA\Property(property="name_ar", type="string"),
-     *                 @OA\Property(property="description_en", type="string"),
-     *                 @OA\Property(property="description_ar", type="string"),
-     *                 @OA\Property(property="logo", type="file"),
-     *                 @OA\Property(property="status", type="boolean")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="Brand updated", @OA\JsonContent(ref="#/components/schemas/Brand")),
-     *     @OA\Response(response=404, description="Brand not found")
-     * )
+     * Update the specified brand.
      */
     public function update(Request $request, $id)
     {
@@ -134,12 +72,12 @@ class BrandController extends Controller
         }
 
         $validated = $request->validate([
-            'name_en' => 'sometimes|required|string',
-            'name_ar' => 'sometimes|required|string',
-            'description_en' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
-            'status' => 'boolean',
+            'name_en'         => 'required|string',
+            'name_ar'         => 'required|string',
+            'description_en'  => 'required|string',
+            'description_ar'  => 'required|string',
+            'logo'            => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'status'          => 'boolean',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -154,14 +92,7 @@ class BrandController extends Controller
     }
 
     /**
-     * @OA\Delete(
-     *     path="/api/brands/{id}",
-     *     summary="Delete a brand",
-     *     tags={"Brands"},
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="Brand deleted"),
-     *     @OA\Response(response=404, description="Brand not found")
-     * )
+     * Remove the specified brand from storage.
      */
     public function destroy($id)
     {

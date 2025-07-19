@@ -6,37 +6,37 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/addresses": {
+        "/api/address": {
             "get": {
-                "tags": [
-                    "Address"
+                "summary": "Get paginated addresses",
+                "description": "Get paginated list of addresses",
+                "operationId": "baa011801d8f53634661358779b1fbbb",
+                "parameters": [
+                    {
+                        "name": "pageNumber",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
                 ],
-                "summary": "Get all addresses",
-                "description": "Get all addresses",
-                "operationId": "33ccea30443418dbab9242aa67931614",
                 "responses": {
                     "200": {
-                        "description": "List of addresses",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Address"
-                                    }
-                                }
-                            }
-                        }
+                        "description": "Paginated address list"
                     }
                 }
             },
             "post": {
-                "tags": [
-                    "Address"
-                ],
-                "summary": "Create new address",
-                "description": "Store new address",
-                "operationId": "5549e34fec9817a9794302a767fc7fde",
+                "summary": "Create a new address",
+                "description": "Store a new address",
+                "operationId": "9cdfa09147ff073087e2090b6e3f3c4e",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -72,25 +72,18 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Address created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Address"
-                                }
-                            }
-                        }
+                        "description": "Address created"
+                    },
+                    "422": {
+                        "description": "Validation error"
                     }
                 }
             }
         },
         "/api/address/{id}": {
             "get": {
-                "tags": [
-                    "Address"
-                ],
-                "summary": "Get address by ID",
-                "description": "Display a specific address",
+                "summary": "Get a single address",
+                "description": "Get a single address by ID",
                 "operationId": "15e8aa259d3fe52f40cafd873e48ba50",
                 "parameters": [
                     {
@@ -104,57 +97,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Address details",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer"
-                                        },
-                                        "user_id": {
-                                            "type": "integer"
-                                        },
-                                        "city": {
-                                            "type": "string"
-                                        },
-                                        "region": {
-                                            "type": "string"
-                                        },
-                                        "details": {
-                                            "type": "string"
-                                        },
-                                        "is_default": {
-                                            "type": "boolean"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Address found"
                     },
                     "404": {
                         "description": "Address not found"
                     }
                 }
-            }
-        },
-        "/api/addresses/{id}": {
+            },
             "put": {
-                "tags": [
-                    "Address"
-                ],
-                "summary": "Update address",
-                "description": "Update address",
-                "operationId": "2f078db19c8d7e5a374faa4b048e4c45",
+                "summary": "Update an address",
+                "description": "Update an existing address",
+                "operationId": "860a97b1bd6c16542ee2058a6dde0675",
                 "parameters": [
                     {
                         "name": "id",
@@ -191,16 +144,16 @@
                 "responses": {
                     "200": {
                         "description": "Address updated"
+                    },
+                    "404": {
+                        "description": "Address not found"
                     }
                 }
             },
             "delete": {
-                "tags": [
-                    "Address"
-                ],
-                "summary": "Delete address",
-                "description": "Delete address",
-                "operationId": "3380f49103f9fb0f4a126d324894a33a",
+                "summary": "Delete an address",
+                "description": "Delete an address",
+                "operationId": "cff8047280efe379a37b97be80684b49",
                 "parameters": [
                     {
                         "name": "id",
@@ -214,23 +167,22 @@
                 "responses": {
                     "200": {
                         "description": "Address deleted"
+                    },
+                    "404": {
+                        "description": "Address not found"
                     }
                 }
             }
         },
-        "/api/address/{id}/set-default": {
-            "put": {
-                "tags": [
-                    "Address"
-                ],
-                "summary": "Set an address as default for the user",
-                "description": "Set address as default",
-                "operationId": "f94735220ad9c16a4db7e9834d07c567",
+        "/api/address/{id}/default": {
+            "post": {
+                "summary": "Set address as default",
+                "description": "Set an address as default",
+                "operationId": "10a1415f1fcea98f0cb0b69ec345476c",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Address ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -239,36 +191,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Default address set successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Default address set successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Default address set"
                     },
                     "404": {
-                        "description": "Address not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Address not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Address not found"
                     }
                 }
             }
@@ -555,952 +481,6 @@
                 "responses": {
                     "200": {
                         "description": "Password updated"
-                    }
-                }
-            }
-        },
-        "/api/banners": {
-            "get": {
-                "tags": [
-                    "Banners"
-                ],
-                "summary": "Get all banners",
-                "operationId": "ef6e2a0694446d424bc4d5fa2458f5b1",
-                "responses": {
-                    "200": {
-                        "description": "List of banners",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Banner"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Banners"
-                ],
-                "summary": "Create a new banner",
-                "operationId": "25593be4d8cb447471ad011740d24c3f",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [
-                                    "title",
-                                    "title_ar"
-                                ],
-                                "properties": {
-                                    "title": {
-                                        "type": "string"
-                                    },
-                                    "title_ar": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "description_ar": {
-                                        "type": "string"
-                                    },
-                                    "image": {
-                                        "type": "file"
-                                    },
-                                    "link_url": {
-                                        "type": "string"
-                                    },
-                                    "order": {
-                                        "type": "integer"
-                                    },
-                                    "is_active": {
-                                        "type": "boolean"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Banner created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Banner"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/banners/{id}": {
-            "get": {
-                "tags": [
-                    "Banners"
-                ],
-                "summary": "Get a single banner",
-                "operationId": "a8c88eec6df3d3d95cffe6cc74c39489",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Banner found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Banner"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Banner not found"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Banners"
-                ],
-                "summary": "Update a banner",
-                "operationId": "527b43650ac24e20b1063464e3d0f11a",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "title": {
-                                        "type": "string"
-                                    },
-                                    "title_ar": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "description_ar": {
-                                        "type": "string"
-                                    },
-                                    "image": {
-                                        "type": "file"
-                                    },
-                                    "link_url": {
-                                        "type": "string"
-                                    },
-                                    "order": {
-                                        "type": "integer"
-                                    },
-                                    "is_active": {
-                                        "type": "boolean"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Banner updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Banner"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Banners"
-                ],
-                "summary": "Delete a banner",
-                "operationId": "2cbc019e9409a6b75b5f441bbae16d8d",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Banner deleted"
-                    },
-                    "404": {
-                        "description": "Banner not found"
-                    }
-                }
-            }
-        },
-        "/api/brands": {
-            "get": {
-                "tags": [
-                    "Brands"
-                ],
-                "summary": "Get all brands",
-                "operationId": "3c41aa2e65314941e37a634e810c5f73",
-                "responses": {
-                    "200": {
-                        "description": "List of brands",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Brand"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Brands"
-                ],
-                "summary": "Create a new brand",
-                "operationId": "1dae5363a453b159e035bc04b3fbc0be",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [
-                                    "name_en",
-                                    "name_ar"
-                                ],
-                                "properties": {
-                                    "name_en": {
-                                        "type": "string"
-                                    },
-                                    "name_ar": {
-                                        "type": "string"
-                                    },
-                                    "description_en": {
-                                        "type": "string"
-                                    },
-                                    "description_ar": {
-                                        "type": "string"
-                                    },
-                                    "logo": {
-                                        "type": "file"
-                                    },
-                                    "status": {
-                                        "type": "boolean"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Brand created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Brand"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/brands/{id}": {
-            "get": {
-                "tags": [
-                    "Brands"
-                ],
-                "summary": "Get a single brand",
-                "operationId": "767f67c0955810b713c48d4100f02362",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Brand found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Brand"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Brand not found"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Brands"
-                ],
-                "summary": "Update a brand",
-                "operationId": "1fac61ef4f1f3db38169272ad0e5ed09",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "name_en": {
-                                        "type": "string"
-                                    },
-                                    "name_ar": {
-                                        "type": "string"
-                                    },
-                                    "description_en": {
-                                        "type": "string"
-                                    },
-                                    "description_ar": {
-                                        "type": "string"
-                                    },
-                                    "logo": {
-                                        "type": "file"
-                                    },
-                                    "status": {
-                                        "type": "boolean"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Brand updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Brand"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Brand not found"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Brands"
-                ],
-                "summary": "Delete a brand",
-                "operationId": "401903a3c5a05c699953cb0b07a385e2",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Brand deleted"
-                    },
-                    "404": {
-                        "description": "Brand not found"
-                    }
-                }
-            }
-        },
-        "/api/categories": {
-            "get": {
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Get all categories",
-                "description": "Get all categories",
-                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
-                "responses": {
-                    "200": {
-                        "description": "List of categories",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "name_en": {
-                                                "type": "string",
-                                                "example": "Men"
-                                            },
-                                            "name_ar": {
-                                                "type": "string",
-                                                "example": "رجالي"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Create new category",
-                "description": "Store new category",
-                "operationId": "71fcad552bb0eaba9fb191fd8d8dcab0",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [
-                                    "name_en",
-                                    "name_ar"
-                                ],
-                                "properties": {
-                                    "name_en": {
-                                        "type": "string"
-                                    },
-                                    "name_ar": {
-                                        "type": "string"
-                                    },
-                                    "description_en": {
-                                        "type": "string"
-                                    },
-                                    "description_ar": {
-                                        "type": "string"
-                                    },
-                                    "status": {
-                                        "type": "boolean"
-                                    },
-                                    "logo": {
-                                        "type": "file"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Category created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer"
-                                        },
-                                        "name_en": {
-                                            "type": "string"
-                                        },
-                                        "logo": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/categories/{id}": {
-            "get": {
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Get single category",
-                "description": "Get category by ID",
-                "operationId": "c68e76d323c008827a9e47398b1583de",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Category details",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "name_en": {
-                                            "type": "string",
-                                            "example": "Men"
-                                        },
-                                        "name_ar": {
-                                            "type": "string",
-                                            "example": "رجالي"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Category not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Category not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Update category",
-                "description": "Update category",
-                "operationId": "0e686b2748211cc688333ed705dc111f",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "name_en": {
-                                        "type": "string"
-                                    },
-                                    "name_ar": {
-                                        "type": "string"
-                                    },
-                                    "description_en": {
-                                        "type": "string"
-                                    },
-                                    "description_ar": {
-                                        "type": "string"
-                                    },
-                                    "status": {
-                                        "type": "boolean"
-                                    },
-                                    "logo": {
-                                        "type": "file"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Category updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Category updated"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Delete category",
-                "description": "Delete category",
-                "operationId": "4c12e22a7f8c617bd83bfa1fdc05428d",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Category deleted",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Category deleted"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/coupons": {
-            "get": {
-                "tags": [
-                    "Coupons"
-                ],
-                "summary": "Get all coupons",
-                "description": "Get all coupons",
-                "operationId": "de1c8db4ca4b3c683e03dffd02a9f448",
-                "responses": {
-                    "200": {
-                        "description": "List of coupons",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Coupon"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Coupons"
-                ],
-                "summary": "Create a new coupon",
-                "description": "Store new coupon",
-                "operationId": "f3ffee4301fb5522bc31d0dd443a07e8",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "code",
-                                    "discount_type",
-                                    "discount_value"
-                                ],
-                                "properties": {
-                                    "code": {
-                                        "type": "string",
-                                        "example": "SAVE10"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "10% off your order"
-                                    },
-                                    "discount_type": {
-                                        "type": "string",
-                                        "enum": [
-                                            "percentage",
-                                            "fixed"
-                                        ],
-                                        "example": "percentage"
-                                    },
-                                    "discount_value": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 10
-                                    },
-                                    "max_uses": {
-                                        "type": "integer",
-                                        "example": 100
-                                    },
-                                    "start_date": {
-                                        "type": "string",
-                                        "format": "date-time",
-                                        "example": "2025-07-01T00:00:00Z"
-                                    },
-                                    "end_date": {
-                                        "type": "string",
-                                        "format": "date-time",
-                                        "example": "2025-08-01T00:00:00Z"
-                                    },
-                                    "is_active": {
-                                        "type": "boolean",
-                                        "example": true
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Coupon created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Coupon"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/coupons/{id}": {
-            "put": {
-                "tags": [
-                    "Coupons"
-                ],
-                "summary": "Update a coupon",
-                "description": "Update coupon",
-                "operationId": "057e26e126d3c2474c93f0ab7047a507",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "code": {
-                                        "type": "string",
-                                        "example": "SAVE15"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "15% off your order"
-                                    },
-                                    "discount_type": {
-                                        "type": "string",
-                                        "enum": [
-                                            "percentage",
-                                            "fixed"
-                                        ],
-                                        "example": "fixed"
-                                    },
-                                    "discount_value": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 15
-                                    },
-                                    "max_uses": {
-                                        "type": "integer",
-                                        "example": 50
-                                    },
-                                    "start_date": {
-                                        "type": "string",
-                                        "format": "date-time",
-                                        "example": "2025-07-10T00:00:00Z"
-                                    },
-                                    "end_date": {
-                                        "type": "string",
-                                        "format": "date-time",
-                                        "example": "2025-08-10T00:00:00Z"
-                                    },
-                                    "is_active": {
-                                        "type": "boolean",
-                                        "example": false
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Coupon updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Coupon"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Coupon not found"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Coupons"
-                ],
-                "summary": "Delete a coupon",
-                "description": "Delete coupon",
-                "operationId": "17bea67ca5229520f7a6975f625ca627",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Coupon deleted"
-                    },
-                    "404": {
-                        "description": "Coupon not found"
-                    }
-                }
-            }
-        },
-        "/api/coupons/check": {
-            "get": {
-                "tags": [
-                    "Coupons"
-                ],
-                "summary": "Check if a coupon is valid",
-                "description": "Check coupon validity",
-                "operationId": "1bc7cf46e6eec6f78cd4cd732618fd51",
-                "parameters": [
-                    {
-                        "name": "code",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "SAVE10"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Coupon is valid",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "valid": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "discount_type": {
-                                            "type": "string",
-                                            "example": "percentage"
-                                        },
-                                        "discount_value": {
-                                            "type": "number",
-                                            "example": 10
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid or expired coupon",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Invalid or expired coupon"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
                     }
                 }
             }
@@ -2668,33 +1648,57 @@
                 "tags": [
                     "SubCategories"
                 ],
-                "summary": "Get all SubCategoriess",
-                "description": "Get all SubCategories",
+                "summary": "Get paginated list of SubCategories",
                 "operationId": "777fa3fcab9e713c0f9ef17679d519c8",
+                "parameters": [
+                    {
+                        "name": "pageNumber",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "List of SubCategories",
+                        "description": "Successful response with paginated subcategories",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "name_en": {
-                                                "type": "string",
-                                                "example": "Men"
-                                            },
-                                            "name_ar": {
-                                                "type": "string",
-                                                "example": "رجالي"
-                                            }
+                                    "properties": {
+                                        "pageNumber": {
+                                            "type": "integer"
                                         },
-                                        "type": "object"
-                                    }
+                                        "pageSize": {
+                                            "type": "integer"
+                                        },
+                                        "totalPageNumber": {
+                                            "type": "integer"
+                                        },
+                                        "totalItems": {
+                                            "type": "integer"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SubCategory"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -2705,8 +1709,7 @@
                 "tags": [
                     "SubCategories"
                 ],
-                "summary": "Create new SubCategories",
-                "description": "Store new SubCategories",
+                "summary": "Create new SubCategory",
                 "operationId": "88391300e5f68709f82b8d403ca14016",
                 "requestBody": {
                     "required": true,
@@ -2715,7 +1718,10 @@
                             "schema": {
                                 "required": [
                                     "name_en",
-                                    "name_ar"
+                                    "name_ar",
+                                    "category_id",
+                                    "description_en",
+                                    "description_ar"
                                 ],
                                 "properties": {
                                     "name_en": {
@@ -2730,14 +1736,14 @@
                                     "description_ar": {
                                         "type": "string"
                                     },
+                                    "category_id": {
+                                        "type": "integer"
+                                    },
                                     "status": {
                                         "type": "boolean"
                                     },
                                     "logo": {
                                         "type": "file"
-                                    },
-                                    "category_id": {
-                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -2747,22 +1753,11 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "SubCategories created",
+                        "description": "SubCategory created",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer"
-                                        },
-                                        "name_en": {
-                                            "type": "string"
-                                        },
-                                        "logo": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/SubCategory"
                                 }
                             }
                         }
@@ -2775,8 +1770,7 @@
                 "tags": [
                     "SubCategories"
                 ],
-                "summary": "Get single SubCategories",
-                "description": "Get SubCategories by ID",
+                "summary": "Get single SubCategory by ID",
                 "operationId": "bee6289215e7d443a95dbc9562e61c6d",
                 "parameters": [
                     {
@@ -2790,44 +1784,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "SubCategories details",
+                        "description": "SubCategory details",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "name_en": {
-                                            "type": "string",
-                                            "example": "Men"
-                                        },
-                                        "name_ar": {
-                                            "type": "string",
-                                            "example": "رجالي"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/SubCategory"
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "SubCategories not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "SubCategories not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "SubCategory not found"
                     }
                 }
             },
@@ -2835,8 +1802,7 @@
                 "tags": [
                     "SubCategories"
                 ],
-                "summary": "Update SubCategories",
-                "description": "Update SubCategories",
+                "summary": "Update SubCategory",
                 "operationId": "6710c9e5dfb46fb6f160d3e6e7c1b3b6",
                 "parameters": [
                     {
@@ -2853,6 +1819,13 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
+                                "required": [
+                                    "name_en",
+                                    "name_ar",
+                                    "category_id",
+                                    "description_en",
+                                    "description_ar"
+                                ],
                                 "properties": {
                                     "name_en": {
                                         "type": "string"
@@ -2866,14 +1839,14 @@
                                     "description_ar": {
                                         "type": "string"
                                     },
+                                    "category_id": {
+                                        "type": "integer"
+                                    },
                                     "status": {
                                         "type": "boolean"
                                     },
                                     "logo": {
                                         "type": "file"
-                                    },
-                                    "category_id": {
-                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -2883,14 +1856,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "SubCategories updated",
+                        "description": "SubCategory updated",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "SubCategories updated"
+                                            "example": "SubCategory updated"
                                         }
                                     },
                                     "type": "object"
@@ -2904,8 +1877,7 @@
                 "tags": [
                     "SubCategories"
                 ],
-                "summary": "Delete SubCategories",
-                "description": "Delete SubCategories",
+                "summary": "Delete SubCategory",
                 "operationId": "68a6ba5f87d1b2091f6d4dca81fa8420",
                 "parameters": [
                     {
@@ -2919,14 +1891,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "SubCategories deleted",
+                        "description": "SubCategory deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "SubCategories deleted"
+                                            "example": "SubCategory deleted"
                                         }
                                     },
                                     "type": "object"
@@ -2943,7 +1915,6 @@
                     "SubCategories"
                 ],
                 "summary": "Get SubCategories by category ID",
-                "description": "Get SubCategories by category ID (paginated)",
                 "operationId": "7baf0060204bd6fe3e4bfe0795fc476b",
                 "parameters": [
                     {
@@ -2966,7 +1937,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Paginated list of SubCategories by category",
+                        "description": "Paginated SubCategories by category",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2983,7 +1954,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/SubCategories"
+                                                "$ref": "#/components/schemas/SubCategory"
                                             }
                                         }
                                     },
@@ -2998,199 +1969,6 @@
     },
     "components": {
         "schemas": {
-            "Address": {
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "user_id": {
-                        "type": "integer",
-                        "example": 5
-                    },
-                    "country": {
-                        "type": "string",
-                        "example": "Egypt"
-                    },
-                    "city": {
-                        "type": "string",
-                        "example": "Cairo"
-                    },
-                    "street": {
-                        "type": "string",
-                        "example": "El Tahrir"
-                    },
-                    "building_number": {
-                        "type": "string",
-                        "example": "12"
-                    },
-                    "postal_code": {
-                        "type": "string",
-                        "example": "12345"
-                    }
-                },
-                "type": "object"
-            },
-            "Banner": {
-                "title": "Banner",
-                "required": [
-                    "id",
-                    "title",
-                    "title_ar",
-                    "image"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "title": {
-                        "type": "string",
-                        "example": "Summer Sale"
-                    },
-                    "title_ar": {
-                        "type": "string",
-                        "example": "تخفيضات الصيف"
-                    },
-                    "description": {
-                        "type": "string",
-                        "example": "Huge discounts this summer"
-                    },
-                    "description_ar": {
-                        "type": "string",
-                        "example": "خصومات كبيرة هذا الصيف"
-                    },
-                    "image": {
-                        "type": "string",
-                        "example": "banners/summer.jpg"
-                    },
-                    "link_url": {
-                        "type": "string",
-                        "example": "https://example.com"
-                    },
-                    "order": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "is_active": {
-                        "type": "boolean",
-                        "example": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "type": "object"
-            },
-            "Brand": {
-                "title": "Brand",
-                "required": [
-                    "id",
-                    "name_en",
-                    "name_ar"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name_en": {
-                        "type": "string",
-                        "example": "Nike"
-                    },
-                    "name_ar": {
-                        "type": "string",
-                        "example": "نايك"
-                    },
-                    "description_en": {
-                        "type": "string",
-                        "example": "American sportswear brand"
-                    },
-                    "description_ar": {
-                        "type": "string",
-                        "example": "علامة تجارية أمريكية للملابس الرياضية"
-                    },
-                    "logo": {
-                        "type": "string",
-                        "example": "brands/nike.png"
-                    },
-                    "status": {
-                        "type": "boolean",
-                        "example": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "type": "object"
-            },
-            "Coupon": {
-                "required": [
-                    "code",
-                    "discount_type",
-                    "discount_value"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "code": {
-                        "type": "string",
-                        "example": "SAVE10"
-                    },
-                    "description": {
-                        "type": "string",
-                        "example": "10% off your order"
-                    },
-                    "discount_type": {
-                        "type": "string",
-                        "enum": [
-                            "percentage",
-                            "fixed"
-                        ],
-                        "example": "percentage"
-                    },
-                    "discount_value": {
-                        "type": "number",
-                        "format": "float",
-                        "example": 10
-                    },
-                    "max_uses": {
-                        "type": "integer",
-                        "example": 100
-                    },
-                    "used_count": {
-                        "type": "integer",
-                        "example": 10
-                    },
-                    "start_date": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-07-01T00:00:00Z"
-                    },
-                    "end_date": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-08-01T00:00:00Z"
-                    },
-                    "is_active": {
-                        "type": "boolean",
-                        "example": true
-                    }
-                },
-                "type": "object"
-            },
             "Discount": {
                 "required": [
                     "name",
@@ -3292,11 +2070,12 @@
                 },
                 "type": "object"
             },
-            "SubCategories": {
+            "SubCategory": {
                 "title": "Sub Category",
                 "required": [
                     "id",
-                    "name",
+                    "name_en",
+                    "name_ar",
                     "category_id"
                 ],
                 "properties": {
@@ -3304,13 +2083,33 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "name": {
+                    "name_en": {
                         "type": "string",
                         "example": "Shirts"
+                    },
+                    "name_ar": {
+                        "type": "string",
+                        "example": "قمصان"
+                    },
+                    "description_en": {
+                        "type": "string",
+                        "example": "Subcategory for men's shirts"
+                    },
+                    "description_ar": {
+                        "type": "string",
+                        "example": "قسم فرعي للقمصان الرجالية"
                     },
                     "category_id": {
                         "type": "integer",
                         "example": 2
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "logo": {
+                        "type": "string",
+                        "example": "SubCategories/logo.jpg"
                     }
                 },
                 "type": "object"
@@ -3389,28 +2188,8 @@
     },
     "tags": [
         {
-            "name": "Address",
-            "description": "Address"
-        },
-        {
             "name": "Auth",
             "description": "Auth"
-        },
-        {
-            "name": "Banners",
-            "description": "Banners"
-        },
-        {
-            "name": "Brands",
-            "description": "Brands"
-        },
-        {
-            "name": "Categories",
-            "description": "Categories"
-        },
-        {
-            "name": "Coupons",
-            "description": "Coupons"
         },
         {
             "name": "Discounts",

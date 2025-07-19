@@ -6,53 +6,28 @@ use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-/**
- * @OA\Schema(
- *     schema="Banner",
- *     type="object",
- *     title="Banner",
- *     required={"id", "title", "title_ar", "image"},
- *     @OA\Property(property="id", type="integer", example=1),
- *     @OA\Property(property="title", type="string", example="Summer Sale"),
- *     @OA\Property(property="title_ar", type="string", example="تخفيضات الصيف"),
- *     @OA\Property(property="description", type="string", example="Huge discounts this summer"),
- *     @OA\Property(property="description_ar", type="string", example="خصومات كبيرة هذا الصيف"),
- *     @OA\Property(property="image", type="string", example="banners/summer.jpg"),
- *     @OA\Property(property="link_url", type="string", example="https://example.com"),
- *     @OA\Property(property="order", type="integer", example=1),
- *     @OA\Property(property="is_active", type="boolean", example=true),
- *     @OA\Property(property="created_at", type="string", format="date-time"),
- *     @OA\Property(property="updated_at", type="string", format="date-time")
- * )
- */
 class BannerController extends Controller
 {
     /**
-     * @OA\Get(
-     *     path="/api/banners",
-     *     summary="Get all banners",
-     *     tags={"Banners"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="List of banners",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Banner"))
-     *     )
-     * )
+     * Get all banners with pagination
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Banner::all();
+        $pageSize = $request->input('pageSize', 10);
+        $pageNumber = $request->input('pageNumber', 1);
+
+        $banners = Banner::paginate($pageSize, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'pageNumber' => $banners->currentPage(),
+            'pageSize'   => $banners->perPage(),
+            'total'      => $banners->total(),
+            'data'       => $banners->items(),
+        ]);
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/banners/{id}",
-     *     summary="Get a single banner",
-     *     tags={"Banners"},
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="Banner found", @OA\JsonContent(ref="#/components/schemas/Banner")),
-     *     @OA\Response(response=404, description="Banner not found")
-     * )
+     * Get a single banner
      */
     public function show($id)
     {
@@ -60,45 +35,24 @@ class BannerController extends Controller
         if (!$banner) {
             return response()->json(['message' => 'Banner not found'], 404);
         }
-        return $banner;
+
+        return response()->json($banner);
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/banners",
-     *     summary="Create a new banner",
-     *     tags={"Banners"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 required={"title", "title_ar"},
-     *                 @OA\Property(property="title", type="string"),
-     *                 @OA\Property(property="title_ar", type="string"),
-     *                 @OA\Property(property="description", type="string"),
-     *                 @OA\Property(property="description_ar", type="string"),
-     *                 @OA\Property(property="image", type="file"),
-     *                 @OA\Property(property="link_url", type="string"),
-     *                 @OA\Property(property="order", type="integer"),
-     *                 @OA\Property(property="is_active", type="boolean")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(response=201, description="Banner created", @OA\JsonContent(ref="#/components/schemas/Banner"))
-     * )
+     * Store a new banner
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string',
-            'title_ar' => 'required|string',
-            'description' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'image' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
-            'link_url' => 'nullable|url',
-            'order' => 'nullable|integer',
-            'is_active' => 'boolean',
+            'title'         => 'required|string',
+            'title_ar'      => 'required|string',
+            'description'   => 'required|string',
+            'description_ar'=> 'required|string',
+            'image'         => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'link_url'      => 'nullable|url',
+            'order'         => 'nullable|integer',
+            'is_active'     => 'boolean',
         ]);
 
         $validated['image'] = $request->file('image')->store('banners', 'public');
@@ -108,28 +62,7 @@ class BannerController extends Controller
     }
 
     /**
-     * @OA\Put(
-     *     path="/api/banners/{id}",
-     *     summary="Update a banner",
-     *     tags={"Banners"},
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property(property="title", type="string"),
-     *                 @OA\Property(property="title_ar", type="string"),
-     *                 @OA\Property(property="description", type="string"),
-     *                 @OA\Property(property="description_ar", type="string"),
-     *                 @OA\Property(property="image", type="file"),
-     *                 @OA\Property(property="link_url", type="string"),
-     *                 @OA\Property(property="order", type="integer"),
-     *                 @OA\Property(property="is_active", type="boolean")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="Banner updated", @OA\JsonContent(ref="#/components/schemas/Banner"))
-     * )
+     * Update a banner
      */
     public function update(Request $request, $id)
     {
@@ -139,14 +72,14 @@ class BannerController extends Controller
         }
 
         $validated = $request->validate([
-            'title' => 'sometimes|required|string',
-            'title_ar' => 'sometimes|required|string',
-            'description' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
-            'link_url' => 'nullable|url',
-            'order' => 'nullable|integer',
-            'is_active' => 'boolean',
+            'title'         => 'required|string',
+            'title_ar'      => 'required|string',
+            'description'   => 'required|string',
+            'description_ar'=> 'required|string',
+            'image'         => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'link_url'      => 'nullable|url',
+            'order'         => 'nullable|integer',
+            'is_active'     => 'boolean',
         ]);
 
         if ($request->hasFile('image')) {
@@ -161,14 +94,7 @@ class BannerController extends Controller
     }
 
     /**
-     * @OA\Delete(
-     *     path="/api/banners/{id}",
-     *     summary="Delete a banner",
-     *     tags={"Banners"},
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="Banner deleted"),
-     *     @OA\Response(response=404, description="Banner not found")
-     * )
+     * Delete a banner
      */
     public function destroy($id)
     {

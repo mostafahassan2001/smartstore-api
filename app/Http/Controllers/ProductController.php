@@ -104,22 +104,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name_en' => 'required|string',
-            'name_ar' => 'required|string',
-            'description_en' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'stock_quantity' => 'nullable|integer|min:0',
-            'status' => 'boolean',
-            'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id',
-            'colors' => 'nullable|array',
-            'colors.*' => 'string',
-            'sizes' => 'nullable|array',
-            'sizes.*' => 'string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+      $validated = $request->validate([
+    'name_en' => 'required|string',
+    'name_ar' => 'required|string',
+    'description_en' => 'required|string',
+    'description_ar' => 'required|string',
+    'price' => 'required|numeric|min:0',
+    'stock_quantity' => 'required|integer|min:0',
+    'status' => 'required|boolean',
+    'category_id' => 'required|exists:categories,id',
+    'brand_id' => 'required|exists:brands,id',
+    'colors' => 'required|array',
+    'colors.*' => 'string',
+    'sizes' => 'required|array',
+    'sizes.*' => 'string',
+    'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+]);
+
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
@@ -168,22 +169,23 @@ class ProductController extends Controller
             return response()->json(['message' => 'Product not found'], 404);
         }
 
-        $validated = $request->validate([
-            'name_en' => 'sometimes|required|string',
-            'name_ar' => 'sometimes|required|string',
-            'description_en' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'price' => 'sometimes|required|numeric|min:0',
-            'stock_quantity' => 'nullable|integer|min:0',
-            'status' => 'boolean',
-            'category_id' => 'sometimes|required|exists:categories,id',
-            'brand_id' => 'sometimes|required|exists:brands,id',
-            'colors' => 'nullable|array',
-            'colors.*' => 'string',
-            'sizes' => 'nullable|array',
-            'sizes.*' => 'string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+    $validated = $request->validate([
+    'name_en' => 'required|string',
+    'name_ar' => 'required|string',
+    'description_en' => 'required|string',
+    'description_ar' => 'required|string',
+    'price' => 'required|numeric|min:0',
+    'stock_quantity' => 'required|integer|min:0',
+    'status' => 'required|boolean',
+    'category_id' => 'required|exists:categories,id',
+    'brand_id' => 'required|exists:brands,id',
+    'colors' => 'required|array',
+    'colors.*' => 'string',
+    'sizes' => 'required|array',
+    'sizes.*' => 'string',
+    'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+]);
+
 
         if ($request->hasFile('image')) {
             if ($product->image) {
