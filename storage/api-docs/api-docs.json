@@ -2918,13 +2918,13 @@
                 }
             }
         },
-        "/api/SubCategory": {
+        "/api/subcategories": {
             "get": {
                 "tags": [
                     "SubCategory"
                 ],
                 "summary": "Get paginated list of SubCategory",
-                "operationId": "00e3851606d45c35e64d22ddf80e6200",
+                "operationId": "1533a1b87b1769cd5d8a7c573878e09e",
                 "parameters": [
                     {
                         "name": "pageNumber",
@@ -2985,7 +2985,7 @@
                     "SubCategory"
                 ],
                 "summary": "Create new SubCategory",
-                "operationId": "70e887d5bbed466ecc309429d21ff69d",
+                "operationId": "c2fd1e63e232129a6719ca7fd47248a9",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -3040,13 +3040,13 @@
                 }
             }
         },
-        "/api/SubCategory/{id}": {
+        "/api/subcategories/{id}": {
             "get": {
                 "tags": [
                     "SubCategory"
                 ],
                 "summary": "Get single SubCategory by ID",
-                "operationId": "4287dcd66e4550cede6e2477a2690472",
+                "operationId": "b1fe2b71f5feff68f0855f2a7dac173b",
                 "parameters": [
                     {
                         "name": "id",
@@ -3078,7 +3078,7 @@
                     "SubCategory"
                 ],
                 "summary": "Update SubCategory",
-                "operationId": "6856c905191dfd60185950eedd83de2f",
+                "operationId": "01953f1e06e254b7fd386172ae28442f",
                 "parameters": [
                     {
                         "name": "id",
@@ -3153,7 +3153,7 @@
                     "SubCategory"
                 ],
                 "summary": "Delete SubCategory",
-                "operationId": "f8b02337043be668372f949cbc076bc1",
+                "operationId": "369227ce94804f23a3dabc77f4d0d7b9",
                 "parameters": [
                     {
                         "name": "id",
@@ -3184,13 +3184,13 @@
                 }
             }
         },
-        "/api/SubCategory/category/{categoryId}": {
+        "/api/subcategories/category/{categoryId}": {
             "get": {
                 "tags": [
                     "SubCategory"
                 ],
                 "summary": "Get SubCategory by category ID",
-                "operationId": "621cbdaa8f7e83b0441d1b845580ab02",
+                "operationId": "b8a4cabcff7a8533f9b6eafc21089f43",
                 "parameters": [
                     {
                         "name": "categoryId",
