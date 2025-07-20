@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 /**
  * @OA\Schema(
  *     schema="Address",
+ *   type="object",
+ *     title="Address",
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="user_id", type="integer", example=5),
  *     @OA\Property(property="country", type="string", example="Egypt"),
@@ -25,6 +27,7 @@ class AddressController extends Controller
      * @OA\Get(
      *     path="/api/address",
      *     summary="Get paginated addresses",
+     *   tags={"Address"},
      *     @OA\Parameter(name="pageNumber", in="query", @OA\Schema(type="integer")),
      *     @OA\Parameter(name="pageSize", in="query", @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Paginated address list"),

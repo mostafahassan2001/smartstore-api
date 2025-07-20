@@ -8,6 +8,9 @@
     "paths": {
         "/api/address": {
             "get": {
+                "tags": [
+                    "Address"
+                ],
                 "summary": "Get paginated addresses",
                 "description": "Get paginated list of addresses",
                 "operationId": "baa011801d8f53634661358779b1fbbb",
@@ -3227,6 +3230,7 @@
     "components": {
         "schemas": {
             "Address": {
+                "title": "Address",
                 "properties": {
                     "id": {
                         "type": "integer",
@@ -3662,8 +3666,8 @@
     },
     "tags": [
         {
-            "name": "address",
-            "description": "address"
+            "name": "Address",
+            "description": "Address"
         },
         {
             "name": "Auth",
