@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\File;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
@@ -29,16 +30,17 @@ Route::middleware('auth:api')->group(function () {
      * RESTful Resources
      */
     Route::apiResources([
-        'products'   => ProductController::class,
-        'categories' => CategoryController::class,
-        'brands'     => BrandController::class,
-        'cart'       => CartController::class,
-        'orders'     => OrderController::class,
-        'reviews'    => ReviewController::class,
-        'banners'    => BannerController::class,
-        'coupons'    => CouponController::class,
-        'discounts'  => DiscountController::class,
-        'address'    => AddressController::class,
+        'products'      => ProductController::class,
+        'categories'    => CategoryController::class,
+        'subcategories' => SubcategoryController::class, // ✅ Added
+        'brands'        => BrandController::class,
+        'cart'          => CartController::class,
+        'orders'        => OrderController::class,
+        'reviews'       => ReviewController::class,
+        'banners'       => BannerController::class,
+        'coupons'       => CouponController::class,
+        'discounts'     => DiscountController::class,
+        'address'       => AddressController::class,
     ]);
 
     /**
@@ -59,6 +61,11 @@ Route::middleware('auth:api')->group(function () {
      */
     Route::get('product/category/{categoryId}', [ProductController::class, 'getByCategory']);
     Route::get('product/brand/{brandId}', [ProductController::class, 'getByBrand']);
+
+    /**
+     * Subcategory Extra Route ✅
+     */
+    Route::get('subcategory/category/{categoryId}', [SubcategoryController::class, 'getByCategory']);
 
     /**
      * Order Extra Routes
