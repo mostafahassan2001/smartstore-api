@@ -2918,13 +2918,13 @@
                 }
             }
         },
-        "/api/subcategories": {
+        "/api/SubCategory": {
             "get": {
                 "tags": [
-                    "SubCategories"
+                    "SubCategory"
                 ],
-                "summary": "Get paginated list of SubCategories",
-                "operationId": "1533a1b87b1769cd5d8a7c573878e09e",
+                "summary": "Get paginated list of SubCategory",
+                "operationId": "00e3851606d45c35e64d22ddf80e6200",
                 "parameters": [
                     {
                         "name": "pageNumber",
@@ -2949,7 +2949,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response with paginated subcategories",
+                        "description": "Successful response with paginated SubCategory",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2982,10 +2982,10 @@
             },
             "post": {
                 "tags": [
-                    "SubCategories"
+                    "SubCategory"
                 ],
                 "summary": "Create new SubCategory",
-                "operationId": "c2fd1e63e232129a6719ca7fd47248a9",
+                "operationId": "70e887d5bbed466ecc309429d21ff69d",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -3040,13 +3040,13 @@
                 }
             }
         },
-        "/api/subcategories/{id}": {
+        "/api/SubCategory/{id}": {
             "get": {
                 "tags": [
-                    "SubCategories"
+                    "SubCategory"
                 ],
                 "summary": "Get single SubCategory by ID",
-                "operationId": "b1fe2b71f5feff68f0855f2a7dac173b",
+                "operationId": "4287dcd66e4550cede6e2477a2690472",
                 "parameters": [
                     {
                         "name": "id",
@@ -3075,10 +3075,10 @@
             },
             "put": {
                 "tags": [
-                    "SubCategories"
+                    "SubCategory"
                 ],
                 "summary": "Update SubCategory",
-                "operationId": "01953f1e06e254b7fd386172ae28442f",
+                "operationId": "6856c905191dfd60185950eedd83de2f",
                 "parameters": [
                     {
                         "name": "id",
@@ -3150,10 +3150,10 @@
             },
             "delete": {
                 "tags": [
-                    "SubCategories"
+                    "SubCategory"
                 ],
                 "summary": "Delete SubCategory",
-                "operationId": "369227ce94804f23a3dabc77f4d0d7b9",
+                "operationId": "f8b02337043be668372f949cbc076bc1",
                 "parameters": [
                     {
                         "name": "id",
@@ -3184,13 +3184,13 @@
                 }
             }
         },
-        "/api/subcategories/category/{categoryId}": {
+        "/api/SubCategory/category/{categoryId}": {
             "get": {
                 "tags": [
-                    "SubCategories"
+                    "SubCategory"
                 ],
-                "summary": "Get SubCategories by category ID",
-                "operationId": "b8a4cabcff7a8533f9b6eafc21089f43",
+                "summary": "Get SubCategory by category ID",
+                "operationId": "621cbdaa8f7e83b0441d1b845580ab02",
                 "parameters": [
                     {
                         "name": "categoryId",
@@ -3212,7 +3212,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Paginated SubCategories by category",
+                        "description": "Paginated SubCategory by category",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3602,7 +3602,7 @@
                     },
                     "logo": {
                         "type": "string",
-                        "example": "SubCategories/logo.jpg"
+                        "example": "SubCategory/logo.jpg"
                     }
                 },
                 "type": "object"
@@ -3725,8 +3725,8 @@
             "description": "Reviews"
         },
         {
-            "name": "SubCategories",
-            "description": "SubCategories"
+            "name": "SubCategory",
+            "description": "SubCategory"
         }
     ]
 }
