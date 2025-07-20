@@ -5,83 +5,116 @@ use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+
+/**
+ * @OA\Schema(
+ *     schema="SubCategory",
+ *     type="object",
+ *     title="SubCategory",
+ *     required={"id", "name_en", "name_ar"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name_en", type="string", example="Nike"),
+ *     @OA\Property(property="name_ar", type="string", example="نايك"),
+ *     @OA\Property(property="description_en", type="string", example="American sportswear brand"),
+ *     @OA\Property(property="description_ar", type="string", example="علامة تجارية أمريكية للملابس الرياضية"),
+ *     @OA\Property(property="logo", type="string", example="brands/nike.png"),
+ *  @OA\Property(property="category_id", type="integer", example=2),
+ *     @OA\Property(property="status", type="boolean", example=true),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
+ */
 class SubCategoryController extends Controller
 {
-      /**
-     * @OA\Get(
-     *     path="/api/subcategories",
-     *     tags={"SubCategory"},
-     *     summary="Get all SubCategory",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Paginated list of SubCategory",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="pageNumber", type="integer", example=1),
-     *             @OA\Property(property="pageSize", type="integer", example=10),
-     *             @OA\Property(property="totalPageNumber", type="integer", example=5),
-     *             @OA\Property(property="data", type="array",
-     *                 @OA\Items(ref="#/components/schemas/SubCategory")
-     *             )
-     *         )
-     *     )
-     * )
-     */
-  public function index()
-{
-    try {
-        $subs = SubCategory::paginate(10);
-        \Log::info('SubCategories fetched successfully', ['count' => $subs->count()]);
+    /**
+ * @OA\Get(
+ *     path="/api/subcategories",
+ *     summary="Get all subcategories with pagination",
+ *     tags={"SubCategories"},
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="query",
+ *         required=false,
+ *         description="Page number",
+ *         @OA\Schema(type="integer", default=1)
+ *     ),
+ *     @OA\Parameter(
+ *         name="pageSize",
+ *         in="query",
+ *         required=false,
+ *         description="Number of items per page",
+ *         @OA\Schema(type="integer", default=10)
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Paginated list of subcategories",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="pageNumber", type="integer", example=1),
+ *             @OA\Property(property="pageSize", type="integer", example=10),
+ *             @OA\Property(property="total", type="integer", example=100),
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="array",
+ *                 @OA\Items(ref="#/components/schemas/SubCategory")
+ *             )
+ *         )
+ *     )
+ * )
+ */
+
+    public function index(Request $request)
+    {
+        $pageSize = $request->input('pageSize', 10);
+        $pageNumber = $request->input('pageNumber', 1);
+
+        $subcategories = SubCategory::paginate($pageSize, ['*'], 'page', $pageNumber);
 
         return response()->json([
-            'pageNumber' => $subs->currentPage(),
-            'pageSize' => $subs->perPage(),
-            'totalPageNumber' => $subs->lastPage(),
-            'data' => $subs->items(),
+            'pageNumber' => $subcategories->currentPage(),
+            'pageSize'   => $subcategories->perPage(),
+            'total'      => $subcategories->total(),
+            'data'       => $subcategories->items(),
         ]);
-    } catch (\Exception $e) {
-        \Log::error('Error fetching subcategories', ['error' => $e->getMessage()]);
-        return response()->json(['message' => 'Internal server error'], 500);
     }
-}
 
 
     /**
      * @OA\Get(
      *     path="/api/subcategories/{id}",
-     *     summary="Get single SubCategory by ID",
-     *     tags={"SubCategory"},
+     *     summary="Get a single subcategories",
+     *     tags={"SubCategories"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="SubCategory details", @OA\JsonContent(ref="#/components/schemas/SubCategory")),
+     *     @OA\Response(response=200, description="SubCategory found", @OA\JsonContent(ref="#/components/schemas/SubCategory")),
      *     @OA\Response(response=404, description="SubCategory not found")
      * )
      */
     public function show($id)
     {
-        $sub = SubCategory::find($id);
-        if (!$sub) {
-            return response()->json(['message' => 'SubCategory not found'], 404);
+        $subcategories = SubCategory::find($id);
+        if (!$subcategories) {
+            return response()->json(['message' => 'subcategories not found'], 404);
         }
-        return response()->json($sub);
+        return $subcategories;
     }
 
     /**
      * @OA\Post(
      *     path="/api/subcategories",
-     *     summary="Create new SubCategory",
-     *     tags={"SubCategory"},
+     *     summary="Create a new brand",
+     *     tags={"SubCategories"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"name_en", "name_ar", "category_id", "description_en", "description_ar"},
+     *                 required={"name_en", "name_ar"},
      *                 @OA\Property(property="name_en", type="string"),
      *                 @OA\Property(property="name_ar", type="string"),
      *                 @OA\Property(property="description_en", type="string"),
      *                 @OA\Property(property="description_ar", type="string"),
-     *                 @OA\Property(property="category_id", type="integer"),
-     *                 @OA\Property(property="status", type="boolean"),
-     *                 @OA\Property(property="logo", type="file")
+     *                 @OA\Property(property="logo", type="file"),
+     *  @OA\Property(property="category_id", type="integer"),
+     *                 @OA\Property(property="status", type="boolean")
      *             )
      *         )
      *     ),
@@ -95,49 +128,48 @@ class SubCategoryController extends Controller
             'name_ar' => 'required|string',
             'description_en' => 'required|string',
             'description_ar' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'status' => 'required|boolean',
             'logo' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'category_id' => 'required|exists:categories,id',
+            'status' => 'boolean',
         ]);
 
         if ($request->hasFile('logo')) {
-            $validated['logo'] = $request->file('logo')->store('SubCategory', 'public');
+            $validated['logo'] = $request->file('logo')->store('subcategories', 'public');
         }
 
-        $sub = SubCategory::create($validated);
-        return response()->json($sub, 201);
+        $subcategories = SubCategory::create($validated);
+        return response()->json($subcategories, 201);
     }
 
     /**
      * @OA\Put(
      *     path="/api/subcategories/{id}",
-     *     summary="Update SubCategory",
-     *     tags={"SubCategory"},
+     *     summary="Update a subcategories",
+     *     tags={"SubCategories"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\RequestBody(
-     *         required=true,
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"name_en", "name_ar", "category_id", "description_en", "description_ar"},
      *                 @OA\Property(property="name_en", type="string"),
      *                 @OA\Property(property="name_ar", type="string"),
      *                 @OA\Property(property="description_en", type="string"),
      *                 @OA\Property(property="description_ar", type="string"),
-     *                 @OA\Property(property="category_id", type="integer"),
-     *                 @OA\Property(property="status", type="boolean"),
-     *                 @OA\Property(property="logo", type="file")
+     *   @OA\Property(property="category_id", type="integer"),
+     *                 @OA\Property(property="logo", type="file"),
+     *                 @OA\Property(property="status", type="boolean")
      *             )
      *         )
      *     ),
-     *     @OA\Response(response=200, description="SubCategory updated", @OA\JsonContent(@OA\Property(property="message", type="string", example="SubCategory updated")))
+     *     @OA\Response(response=200, description="subcategories updated", @OA\JsonContent(ref="#/components/schemas/SubCategory")),
+     *     @OA\Response(response=404, description="subcategories not found")
      * )
      */
     public function update(Request $request, $id)
     {
-        $sub = SubCategory::find($id);
-        if (!$sub) {
-            return response()->json(['message' => 'SubCategory not found'], 404);
+        $subcategories = SubCategory::find($id);
+        if (!$subcategories) {
+            return response()->json(['message' => 'subcategories not found'], 404);
         }
 
         $validated = $request->validate([
@@ -145,77 +177,86 @@ class SubCategoryController extends Controller
             'name_ar' => 'required|string',
             'description_en' => 'required|string',
             'description_ar' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'status' => 'required|boolean',
             'logo' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+               'category_id' => 'required|exists:categories,id',
+            'status' => 'boolean',
         ]);
 
         if ($request->hasFile('logo')) {
-            if ($sub->logo) {
-                Storage::disk('public')->delete($sub->logo);
+            if ($subcategories->logo) {
+                Storage::disk('public')->delete($subcategories->logo);
             }
-            $validated['logo'] = $request->file('logo')->store('SubCategory', 'public');
+            $validated['logo'] = $request->file('logo')->store('subcategories', 'public');
         }
 
-        $sub->update($validated);
-        return response()->json(['message' => 'SubCategory updated']);
+        $brand->update($validated);
+        return response()->json($subcategories);
     }
 
     /**
      * @OA\Delete(
      *     path="/api/subcategories/{id}",
-     *     summary="Delete SubCategory",
-     *     tags={"SubCategory"},
+     *     summary="Delete a subcategories",
+     *     tags={"SubCategories"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="SubCategory deleted", @OA\JsonContent(@OA\Property(property="message", type="string", example="SubCategory deleted")))
+     *     @OA\Response(response=200, description="subcategories deleted"),
+     *     @OA\Response(response=404, description="subcategories not found")
      * )
      */
     public function destroy($id)
     {
-        $sub = SubCategory::find($id);
-        if (!$sub) {
-            return response()->json(['message' => 'SubCategory not found'], 404);
+        $subcategories = SubCategory::find($id);
+        if (!$subcategories) {
+            return response()->json(['message' => 'subcategories not found'], 404);
         }
 
-        if ($sub->logo) {
-            Storage::disk('public')->delete($sub->logo);
+        if ($subcategories->logo) {
+            Storage::disk('public')->delete($subcategories->logo);
         }
 
-        $sub->delete();
-        return response()->json(['message' => 'SubCategory deleted']);
+        $subcategories->delete();
+        return response()->json(['message' => 'subcategories deleted']);
     }
-
-    /**
-     * @OA\Get(
-     *     path="/api/subcategories/category/{categoryId}",
-     *     summary="Get SubCategory by category ID",
-     *     tags={"SubCategory"},
-     *     @OA\Parameter(name="categoryId", in="path", required=true, @OA\Schema(type="integer")),
-     *     @OA\Parameter(name="page", in="query", required=false, @OA\Schema(type="integer", default=1)),
-     *     @OA\Response(response=200, description="Paginated SubCategory by category",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="pageNumber", type="integer"),
-     *             @OA\Property(property="pageSize", type="integer"),
-     *             @OA\Property(property="totalPageNumber", type="integer"),
-     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/SubCategory"))
-     *         )
-     *     )
-     * )
-     */
-   public function getByCategory(Request $request, $categoryId)
+     /**
+ * Get SubCategories by category ID (paginated)
+ *
+ * @OA\Get(
+ *     path="/api/SubCategories/category/{categoryId}",
+ *     summary="Get SubCategories by category ID",
+ *     tags={"SubCategories"},
+ *     @OA\Parameter(
+ *         name="categoryId",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=1)
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Paginated list of subcategories by category",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="pageNumber", type="integer"),
+ *             @OA\Property(property="pageSize", type="integer"),
+ *             @OA\Property(property="totalPageNumber", type="integer"),
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Product"))
+ *         )
+ *     )
+ * )
+ */
+public function getByCategory($categoryId)
 {
-    $pageSize = $request->input('pageSize', 10);
-    $pageNumber = $request->input('pageNumber', 1);
-
-    $subs = SubCategory::where('category_id', $categoryId)
-                ->paginate($pageSize, ['*'], 'page', $pageNumber);
+    $subcategories = SubCategory::where('category_id', $categoryId)->paginate(10);
 
     return response()->json([
-        'pageNumber' => $subs->currentPage(),
-        'pageSize' => $subs->perPage(),
-        'totalPageNumber' => $subs->lastPage(),
-        'data' => $subs->items(),
+        'pageNumber' => $subcategories->currentPage(),
+        'pageSize' => $subcategories->perPage(),
+        'totalPageNumber' => $subcategories->lastPage(),
+        'data' => $subcategories->items(),
     ]);
 }
-
 }

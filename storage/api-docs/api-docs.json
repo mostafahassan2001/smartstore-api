@@ -2921,13 +2921,35 @@
         "/api/subcategories": {
             "get": {
                 "tags": [
-                    "SubCategory"
+                    "SubCategories"
                 ],
-                "summary": "Get all SubCategory",
+                "summary": "Get all subcategories with pagination",
                 "operationId": "329bf50ac12550f84d6a70f7523dbffa",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Paginated list of SubCategory",
+                        "description": "Paginated list of subcategories",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2940,9 +2962,9 @@
                                             "type": "integer",
                                             "example": 10
                                         },
-                                        "totalPageNumber": {
+                                        "total": {
                                             "type": "integer",
-                                            "example": 5
+                                            "example": 100
                                         },
                                         "data": {
                                             "type": "array",
@@ -2960,9 +2982,9 @@
             },
             "post": {
                 "tags": [
-                    "SubCategory"
+                    "SubCategories"
                 ],
-                "summary": "Create new SubCategory",
+                "summary": "Create a new brand",
                 "operationId": "596036cf3873c08f709d154b975e687b",
                 "requestBody": {
                     "required": true,
@@ -2971,10 +2993,7 @@
                             "schema": {
                                 "required": [
                                     "name_en",
-                                    "name_ar",
-                                    "category_id",
-                                    "description_en",
-                                    "description_ar"
+                                    "name_ar"
                                 ],
                                 "properties": {
                                     "name_en": {
@@ -2989,14 +3008,14 @@
                                     "description_ar": {
                                         "type": "string"
                                     },
+                                    "logo": {
+                                        "type": "file"
+                                    },
                                     "category_id": {
                                         "type": "integer"
                                     },
                                     "status": {
                                         "type": "boolean"
-                                    },
-                                    "logo": {
-                                        "type": "file"
                                     }
                                 },
                                 "type": "object"
@@ -3021,9 +3040,9 @@
         "/api/subcategories/{id}": {
             "get": {
                 "tags": [
-                    "SubCategory"
+                    "SubCategories"
                 ],
-                "summary": "Get single SubCategory by ID",
+                "summary": "Get a single subcategories",
                 "operationId": "0d0a401a16be23e3fc1631dfe2ea968f",
                 "parameters": [
                     {
@@ -3037,7 +3056,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "SubCategory details",
+                        "description": "SubCategory found",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3053,9 +3072,9 @@
             },
             "put": {
                 "tags": [
-                    "SubCategory"
+                    "SubCategories"
                 ],
-                "summary": "Update SubCategory",
+                "summary": "Update a subcategories",
                 "operationId": "6520fbbeaa90154fa0109eeb72ce6664",
                 "parameters": [
                     {
@@ -3068,17 +3087,9 @@
                     }
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "required": [
-                                    "name_en",
-                                    "name_ar",
-                                    "category_id",
-                                    "description_en",
-                                    "description_ar"
-                                ],
                                 "properties": {
                                     "name_en": {
                                         "type": "string"
@@ -3095,11 +3106,11 @@
                                     "category_id": {
                                         "type": "integer"
                                     },
-                                    "status": {
-                                        "type": "boolean"
-                                    },
                                     "logo": {
                                         "type": "file"
+                                    },
+                                    "status": {
+                                        "type": "boolean"
                                     }
                                 },
                                 "type": "object"
@@ -3109,28 +3120,25 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "SubCategory updated",
+                        "description": "subcategories updated",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "SubCategory updated"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/SubCategory"
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "subcategories not found"
                     }
                 }
             },
             "delete": {
                 "tags": [
-                    "SubCategory"
+                    "SubCategories"
                 ],
-                "summary": "Delete SubCategory",
+                "summary": "Delete a subcategories",
                 "operationId": "2b0128b464e15b8da69d359cf2900f0f",
                 "parameters": [
                     {
@@ -3144,31 +3152,22 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "SubCategory deleted",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "SubCategory deleted"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "subcategories deleted"
+                    },
+                    "404": {
+                        "description": "subcategories not found"
                     }
                 }
             }
         },
-        "/api/subcategories/category/{categoryId}": {
+        "/api/SubCategories/category/{categoryId}": {
             "get": {
                 "tags": [
-                    "SubCategory"
+                    "SubCategories"
                 ],
-                "summary": "Get SubCategory by category ID",
-                "operationId": "0ee3708bf75bc4b83569995554859759",
+                "summary": "Get SubCategories by category ID",
+                "description": "Get SubCategories by category ID (paginated)",
+                "operationId": "76385b1f7997150aafbf5c3b11df0132",
                 "parameters": [
                     {
                         "name": "categoryId",
@@ -3190,7 +3189,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Paginated SubCategory by category",
+                        "description": "Paginated list of subcategories by category",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3207,7 +3206,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/SubCategory"
+                                                "$ref": "#/components/schemas/Product"
                                             }
                                         }
                                     },
@@ -3541,6 +3540,57 @@
                 },
                 "type": "object"
             },
+            "SubCategory": {
+                "title": "SubCategory",
+                "required": [
+                    "id",
+                    "name_en",
+                    "name_ar"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name_en": {
+                        "type": "string",
+                        "example": "Nike"
+                    },
+                    "name_ar": {
+                        "type": "string",
+                        "example": "نايك"
+                    },
+                    "description_en": {
+                        "type": "string",
+                        "example": "American sportswear brand"
+                    },
+                    "description_ar": {
+                        "type": "string",
+                        "example": "علامة تجارية أمريكية للملابس الرياضية"
+                    },
+                    "logo": {
+                        "type": "string",
+                        "example": "brands/nike.png"
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "Product": {
                 "title": "Product",
                 "required": [
@@ -3614,50 +3664,6 @@
                     }
                 },
                 "type": "object"
-            },
-            "SubCategory": {
-                "title": "SubCategory",
-                "required": [
-                    "id",
-                    "name_en",
-                    "name_ar",
-                    "category_id"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name_en": {
-                        "type": "string",
-                        "example": "Shirts"
-                    },
-                    "name_ar": {
-                        "type": "string",
-                        "example": "قمصان"
-                    },
-                    "description_en": {
-                        "type": "string",
-                        "example": "Subcategory for men's shirts"
-                    },
-                    "description_ar": {
-                        "type": "string",
-                        "example": "قسم فرعي للقمصان الرجالية"
-                    },
-                    "category_id": {
-                        "type": "integer",
-                        "example": 2
-                    },
-                    "status": {
-                        "type": "boolean",
-                        "example": true
-                    },
-                    "logo": {
-                        "type": "string",
-                        "example": "SubCategory/logo.jpg"
-                    }
-                },
-                "type": "object"
             }
         }
     },
@@ -3707,8 +3713,8 @@
             "description": "Reviews"
         },
         {
-            "name": "SubCategory",
-            "description": "SubCategory"
+            "name": "SubCategories",
+            "description": "SubCategories"
         }
     ]
 }
