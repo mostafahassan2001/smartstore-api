@@ -2947,7 +2947,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/Product"
+                                                "$ref": "#/components/schemas/SubCategory"
                                             }
                                         }
                                     },
@@ -3541,50 +3541,6 @@
                 },
                 "type": "object"
             },
-            "SubCategory": {
-                "title": "SubCategory",
-                "required": [
-                    "id",
-                    "name_en",
-                    "name_ar",
-                    "category_id"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name_en": {
-                        "type": "string",
-                        "example": "Shirts"
-                    },
-                    "name_ar": {
-                        "type": "string",
-                        "example": "قمصان"
-                    },
-                    "description_en": {
-                        "type": "string",
-                        "example": "Subcategory for men's shirts"
-                    },
-                    "description_ar": {
-                        "type": "string",
-                        "example": "قسم فرعي للقمصان الرجالية"
-                    },
-                    "category_id": {
-                        "type": "integer",
-                        "example": 2
-                    },
-                    "status": {
-                        "type": "boolean",
-                        "example": true
-                    },
-                    "logo": {
-                        "type": "string",
-                        "example": "SubCategory/logo.jpg"
-                    }
-                },
-                "type": "object"
-            },
             "Product": {
                 "title": "Product",
                 "required": [
@@ -3655,6 +3611,50 @@
                     "image": {
                         "type": "string",
                         "example": "products/image.jpg"
+                    }
+                },
+                "type": "object"
+            },
+            "SubCategory": {
+                "title": "SubCategory",
+                "required": [
+                    "id",
+                    "name_en",
+                    "name_ar",
+                    "category_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name_en": {
+                        "type": "string",
+                        "example": "Shirts"
+                    },
+                    "name_ar": {
+                        "type": "string",
+                        "example": "قمصان"
+                    },
+                    "description_en": {
+                        "type": "string",
+                        "example": "Subcategory for men's shirts"
+                    },
+                    "description_ar": {
+                        "type": "string",
+                        "example": "قسم فرعي للقمصان الرجالية"
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "logo": {
+                        "type": "string",
+                        "example": "SubCategory/logo.jpg"
                     }
                 },
                 "type": "object"
