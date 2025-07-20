@@ -32,7 +32,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResources([
         'products'      => ProductController::class,
         'categories'    => CategoryController::class,
-        'Subcategories' => SubCategoriesController::class, // ✅ Added
+        'subcategories' => SubCategoriesController::class, // ✅ Added
         'brands'        => BrandController::class,
         'cart'          => CartController::class,
         'orders'        => OrderController::class,
@@ -65,7 +65,7 @@ Route::middleware('auth:api')->group(function () {
     /**
      * Subcategory Extra Route ✅
      */
-    Route::get('Subcategories/category/{categoryId}', [SubCategoriesController::class, 'getByCategory']);
+    Route::get('subcategories/category/{categoryId}', [SubCategoriesController::class, 'getByCategory']);
 
     /**
      * Order Extra Routes
