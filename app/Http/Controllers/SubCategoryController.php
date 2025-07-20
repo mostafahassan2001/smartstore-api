@@ -243,7 +243,7 @@ class SubCategoryController extends Controller
  *             @OA\Property(property="pageNumber", type="integer"),
  *             @OA\Property(property="pageSize", type="integer"),
  *             @OA\Property(property="totalPageNumber", type="integer"),
- *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Product"))
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/SubCategory"))
  *         )
  *     )
  * )

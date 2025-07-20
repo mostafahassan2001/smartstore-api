@@ -28,7 +28,7 @@ return new class extends Migration
         $table->decimal('price', 10, 2);
         $table->boolean('status')->default(true);
         $table->foreignId('category_id')->constrained()->onDelete('cascade');
-        $table->foreignId('subcategory_id')->constrained()->onDelete('cascade');
+        $table->foreignId('sub_category_id')->constrained()->onDelete('cascade');
         $table->foreignId('brand_id')->constrained()->onDelete('cascade');
 
         $table->timestamps();
