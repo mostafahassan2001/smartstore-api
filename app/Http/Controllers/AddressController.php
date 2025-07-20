@@ -121,7 +121,10 @@ class AddressController extends Controller
      *  tags={"Address"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\RequestBody(
+     *         required=true,
      *         @OA\JsonContent(
+     *             required={"user_id", "city", "street", "building"},
+     *             @OA\Property(property="user_id", type="integer"),
      *             @OA\Property(property="city", type="string"),
      *             @OA\Property(property="street", type="string"),
      *             @OA\Property(property="building", type="string"),
