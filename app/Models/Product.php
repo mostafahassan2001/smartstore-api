@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  *     @OA\Property(property="stock_quantity", type="number", format="integer", example=5),
  *     @OA\Property(property="status", type="boolean", example=true),
  *     @OA\Property(property="category_id", type="integer", example=2),
- *     @OA\Property(property="subcategory_id", type="integer", example=2),
+ *     @OA\Property(property="sub_category_id", type="integer", example=2),
  *     @OA\Property(property="brand_id", type="integer", example=3),
  *     @OA\Property(property="colors", type="array", @OA\Items(type="string")),
  *     @OA\Property(property="sizes", type="array", @OA\Items(type="string")),
@@ -39,7 +39,7 @@ class Product extends Model
     'price',
     'status',
     'category_id',
-    'subcategory_id',
+    'sub_category_id',
     'brand_id',
 ];
 

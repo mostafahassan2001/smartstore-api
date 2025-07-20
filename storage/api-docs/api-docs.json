@@ -2377,7 +2377,7 @@
                                     "category_id": {
                                         "type": "integer"
                                     },
-                                    "subcategory_id": {
+                                    "sub_category_id": {
                                         "type": "integer"
                                     },
                                     "brand_id": {
@@ -2494,7 +2494,7 @@
                                     "category_id": {
                                         "type": "integer"
                                     },
-                                    "subcategory_id": {
+                                    "sub_category_id": {
                                         "type": "integer"
                                     },
                                     "brand_id": {
@@ -3638,7 +3638,7 @@
                         "type": "integer",
                         "example": 2
                     },
-                    "subcategory_id": {
+                    "sub_category_id": {
                         "type": "integer",
                         "example": 2
                     },
