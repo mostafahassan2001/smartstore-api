@@ -26,9 +26,11 @@ class SubCategoryController extends Controller
      *     )
      * )
      */
-    public function index()
-    {
+  public function index()
+{
+    try {
         $subs = SubCategory::paginate(10);
+        \Log::info('SubCategories fetched successfully', ['count' => $subs->count()]);
 
         return response()->json([
             'pageNumber' => $subs->currentPage(),
@@ -36,7 +38,11 @@ class SubCategoryController extends Controller
             'totalPageNumber' => $subs->lastPage(),
             'data' => $subs->items(),
         ]);
+    } catch (\Exception $e) {
+        \Log::error('Error fetching subcategories', ['error' => $e->getMessage()]);
+        return response()->json(['message' => 'Internal server error'], 500);
     }
+}
 
 
     /**
