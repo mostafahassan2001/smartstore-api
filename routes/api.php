@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\File;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\SubCategoriesController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
@@ -65,7 +65,7 @@ Route::middleware('auth:api')->group(function () {
     /**
      * Subcategory Extra Route ✅
      */
-    Route::get('subcategory/category/{categoryId}', [SubcategoryController::class, 'getByCategory']);
+    Route::get('Subcategories/category/{categoryId}', [SubCategoriesController::class, 'getByCategory']);
 
     /**
      * Order Extra Routes
