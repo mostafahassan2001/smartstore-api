@@ -54,6 +54,7 @@ class AddressController extends Controller
      * @OA\Get(
      *     path="/api/address/{id}",
      *     summary="Get a single address",
+     *  tags={"Address"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Address found"),
      *     @OA\Response(response=404, description="Address not found"),
@@ -76,6 +77,7 @@ class AddressController extends Controller
      * @OA\Post(
      *     path="/api/address",
      *     summary="Create a new address",
+     *  tags={"Address"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -116,6 +118,7 @@ class AddressController extends Controller
      * @OA\Put(
      *     path="/api/address/{id}",
      *     summary="Update an address",
+     *  tags={"Address"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\RequestBody(
      *         @OA\JsonContent(
@@ -159,6 +162,7 @@ class AddressController extends Controller
      * @OA\Delete(
      *     path="/api/address/{id}",
      *     summary="Delete an address",
+     *  tags={"Address"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Address deleted"),
      *     @OA\Response(response=404, description="Address not found"),
@@ -183,6 +187,7 @@ class AddressController extends Controller
      * @OA\Post(
      *     path="/api/address/{id}/default",
      *     summary="Set address as default",
+     *  tags={"Address"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Default address set"),
      *     @OA\Response(response=404, description="Address not found"),
