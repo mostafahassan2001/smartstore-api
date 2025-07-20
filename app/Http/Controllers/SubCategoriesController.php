@@ -26,7 +26,7 @@ class SubCategoriesController extends Controller
 {
    /**
  * @OA\Get(
- *     path="/api/SubCategories",
+ *     path="/api/subcategories",
  *     summary="Get paginated list of SubCategories",
  *     tags={"SubCategories"},
  *     @OA\Parameter(
@@ -78,7 +78,7 @@ public function index(Request $request)
 
     /**
      * @OA\Get(
-     *     path="/api/SubCategories/{id}",
+     *     path="/api/subcategories/{id}",
      *     summary="Get single SubCategory by ID",
      *     tags={"SubCategories"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
@@ -97,7 +97,7 @@ public function index(Request $request)
 
     /**
      * @OA\Post(
-     *     path="/api/SubCategories",
+     *     path="/api/subcategories",
      *     summary="Create new SubCategory",
      *     tags={"SubCategories"},
      *     @OA\RequestBody(
@@ -141,7 +141,7 @@ public function index(Request $request)
 
     /**
      * @OA\Put(
-     *     path="/api/SubCategories/{id}",
+     *     path="/api/subcategories/{id}",
      *     summary="Update SubCategory",
      *     tags={"SubCategories"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
@@ -194,7 +194,7 @@ public function index(Request $request)
 
     /**
      * @OA\Delete(
-     *     path="/api/SubCategories/{id}",
+     *     path="/api/subcategories/{id}",
      *     summary="Delete SubCategory",
      *     tags={"SubCategories"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
@@ -218,7 +218,7 @@ public function index(Request $request)
 
     /**
      * @OA\Get(
-     *     path="/api/SubCategories/category/{categoryId}",
+     *     path="/api/subcategories/category/{categoryId}",
      *     summary="Get SubCategories by category ID",
      *     tags={"SubCategories"},
      *     @OA\Parameter(name="categoryId", in="path", required=true, @OA\Schema(type="integer")),
