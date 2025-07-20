@@ -37,6 +37,7 @@ class Product extends Model
     'colors',
     'sizes',
     'price',
+    'stock_quantity',
     'status',
     'category_id',
     'sub_category_id',
