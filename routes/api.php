@@ -65,8 +65,9 @@ Route::middleware('auth:api')->group(function () {
     /**
      * Subcategory Extra Route ✅
      */
-    Route::get('subcategories/category/{categoryId}', [SubCategoryController::class, 'getByCategory']);
-Route::get('/subcategories', [SubCategoryController::class, 'index']);
+Route::apiResource('subcategories', SubCategoryController::class);
+Route::get('category/{categoryId}/subcategories', [SubCategoryController::class, 'getByCategory']);
+
     /**
      * Order Extra Routes
      */
