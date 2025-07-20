@@ -83,7 +83,7 @@ class ProductController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"name_en", "name_ar", "price", "category_id", "brand_id"},
+     *                 required={"name_en", "name_ar","description_en","description_ar","stock_quantity", "price", "sub_category_id","category_id", "brand_id"},
      *                 @OA\Property(property="name_en", type="string"),
      *                 @OA\Property(property="name_ar", type="string"),
      *                 @OA\Property(property="description_en", type="string"),
@@ -145,7 +145,8 @@ class ProductController extends Controller
      *         required=true,
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
-     *             @OA\Schema(
+     *           @OA\Schema(
+     *                 required={"name_en", "name_ar","description_en","description_ar","stock_quantity", "price", "sub_category_id","category_id", "brand_id"},
      *                 @OA\Property(property="name_en", type="string"),
      *                 @OA\Property(property="name_ar", type="string"),
      *                 @OA\Property(property="description_en", type="string"),

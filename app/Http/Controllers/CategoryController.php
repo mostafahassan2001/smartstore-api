@@ -12,8 +12,12 @@ use Illuminate\Support\Facades\Storage;
  *     title="Category",
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="name", type="string", example="Clothing"),
- *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-01-01T00:00:00Z"),
- *     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-01-01T00:00:00Z")
+ *     @OA\Property(property="description_en", type="string", example="American sportswear brand"),
+ *     @OA\Property(property="description_ar", type="string", example="علامة تجارية أمريكية للملابس الرياضية"),
+ *     @OA\Property(property="logo", type="string", example="brands/nike.png"),
+ *     @OA\Property(property="status", type="boolean", example=true),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
  * )
  */
 
@@ -122,7 +126,7 @@ class CategoryController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"name_en", "name_ar"},
+     *                 required={"name_en", "name_ar","description_en","description_ar"},
      *                 @OA\Property(property="name_en", type="string"),
      *                 @OA\Property(property="name_ar", type="string"),
      *                 @OA\Property(property="description_en", type="string"),
@@ -132,14 +136,7 @@ class CategoryController extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Category created",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer"),
-     *             @OA\Property(property="name_en", type="string"),
-     *             @OA\Property(property="logo", type="string")
-     *         )
+     *     @OA\Response(response=201, description="Category created", @OA\JsonContent(ref="#/components/schemas/Category"))
      *     )
      * )
      */
@@ -175,6 +172,7 @@ class CategoryController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
+     *                 required={"name_en", "name_ar","description_en","description_ar"},
      *                 @OA\Property(property="name_en", type="string"),
      *                 @OA\Property(property="name_ar", type="string"),
      *                 @OA\Property(property="description_en", type="string"),
@@ -184,12 +182,8 @@ class CategoryController extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Category updated",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Category updated")
-     *         )
+     *      @OA\Response(response=200, description="Category updated", @OA\JsonContent(ref="#/components/schemas/Category")),
+     *     @OA\Response(response=404, description="Category not found")
      *     )
      * )
      */

@@ -101,7 +101,7 @@ class BannerController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"title", "title_ar"},
+     *                 required={"title", "title_ar","description","description_ar","image","link_url","order"},
      *                 @OA\Property(property="title", type="string"),
      *                 @OA\Property(property="title_ar", type="string"),
      *                 @OA\Property(property="description", type="string"),
@@ -122,7 +122,7 @@ class BannerController extends Controller
             'title' => 'required|string',
             'title_ar' => 'required|string',
             'description' => 'required|string',
-            'description_ar' => 'nulrequiredlable|string',
+            'description_ar' => 'required|string',
             'image' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
             'link_url' => 'required|url',
             'order' => 'required|integer',
@@ -142,9 +142,10 @@ class BannerController extends Controller
      *     tags={"Banners"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\RequestBody(
-     *         @OA\MediaType(
+     *          @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
+     *                 required={"title", "title_ar","description","description_ar"},
      *                 @OA\Property(property="title", type="string"),
      *                 @OA\Property(property="title_ar", type="string"),
      *                 @OA\Property(property="description", type="string"),
@@ -170,7 +171,7 @@ class BannerController extends Controller
             'title' => 'required|string',
             'title_ar' => 'required|string',
             'description' => 'required|string',
-            'description_ar' => 'nullrequiredable|string',
+            'description_ar' => 'required|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
             'link_url' => 'nullable|url',
             'order' => 'nullable|integer',

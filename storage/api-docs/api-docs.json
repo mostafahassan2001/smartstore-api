@@ -131,10 +131,20 @@
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "user_id",
+                                    "city",
+                                    "street",
+                                    "building"
+                                ],
                                 "properties": {
+                                    "user_id": {
+                                        "type": "integer"
+                                    },
                                     "city": {
                                         "type": "string"
                                     },
@@ -573,7 +583,12 @@
                             "schema": {
                                 "required": [
                                     "title",
-                                    "title_ar"
+                                    "title_ar",
+                                    "description",
+                                    "description_ar",
+                                    "image",
+                                    "link_url",
+                                    "order"
                                 ],
                                 "properties": {
                                     "title": {
@@ -673,6 +688,12 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
+                                "required": [
+                                    "title",
+                                    "title_ar",
+                                    "description",
+                                    "description_ar"
+                                ],
                                 "properties": {
                                     "title": {
                                         "type": "string"
@@ -818,7 +839,9 @@
                             "schema": {
                                 "required": [
                                     "name_en",
-                                    "name_ar"
+                                    "name_ar",
+                                    "description_en",
+                                    "description_ar"
                                 ],
                                 "properties": {
                                     "name_en": {
@@ -912,6 +935,12 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
+                                "required": [
+                                    "name_en",
+                                    "name_ar",
+                                    "description_en",
+                                    "description_ar"
+                                ],
                                 "properties": {
                                     "name_en": {
                                         "type": "string"
@@ -1263,7 +1292,9 @@
                             "schema": {
                                 "required": [
                                     "name_en",
-                                    "name_ar"
+                                    "name_ar",
+                                    "description_en",
+                                    "description_ar"
                                 ],
                                 "properties": {
                                     "name_en": {
@@ -1296,18 +1327,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer"
-                                        },
-                                        "name_en": {
-                                            "type": "string"
-                                        },
-                                        "logo": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/Category"
                                 }
                             }
                         }
@@ -1398,6 +1418,12 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
+                                "required": [
+                                    "name_en",
+                                    "name_ar",
+                                    "description_en",
+                                    "description_ar"
+                                ],
                                 "properties": {
                                     "name_en": {
                                         "type": "string"
@@ -1429,16 +1455,13 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Category updated"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/Category"
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Category not found"
                     }
                 }
             },
@@ -2348,7 +2371,11 @@
                                 "required": [
                                     "name_en",
                                     "name_ar",
+                                    "description_en",
+                                    "description_ar",
+                                    "stock_quantity",
                                     "price",
+                                    "sub_category_id",
                                     "category_id",
                                     "brand_id"
                                 ],
@@ -2469,6 +2496,17 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
+                                "required": [
+                                    "name_en",
+                                    "name_ar",
+                                    "description_en",
+                                    "description_ar",
+                                    "stock_quantity",
+                                    "price",
+                                    "sub_category_id",
+                                    "category_id",
+                                    "brand_id"
+                                ],
                                 "properties": {
                                     "name_en": {
                                         "type": "string"
@@ -2993,7 +3031,10 @@
                             "schema": {
                                 "required": [
                                     "name_en",
-                                    "name_ar"
+                                    "name_ar",
+                                    "description_en",
+                                    "description_ar",
+                                    "category_id"
                                 ],
                                 "properties": {
                                     "name_en": {
@@ -3090,6 +3131,13 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
+                                "required": [
+                                    "name_en",
+                                    "name_ar",
+                                    "description_en",
+                                    "description_ar",
+                                    "category_id"
+                                ],
                                 "properties": {
                                     "name_en": {
                                         "type": "string"
@@ -3103,11 +3151,11 @@
                                     "description_ar": {
                                         "type": "string"
                                     },
-                                    "category_id": {
-                                        "type": "integer"
-                                    },
                                     "logo": {
                                         "type": "file"
+                                    },
+                                    "category_id": {
+                                        "type": "integer"
                                     },
                                     "status": {
                                         "type": "boolean"
@@ -3369,15 +3417,29 @@
                         "type": "string",
                         "example": "Clothing"
                     },
+                    "description_en": {
+                        "type": "string",
+                        "example": "American sportswear brand"
+                    },
+                    "description_ar": {
+                        "type": "string",
+                        "example": "علامة تجارية أمريكية للملابس الرياضية"
+                    },
+                    "logo": {
+                        "type": "string",
+                        "example": "brands/nike.png"
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    },
                     "created_at": {
                         "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T00:00:00Z"
+                        "format": "date-time"
                     },
                     "updated_at": {
                         "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T00:00:00Z"
+                        "format": "date-time"
                     }
                 },
                 "type": "object"

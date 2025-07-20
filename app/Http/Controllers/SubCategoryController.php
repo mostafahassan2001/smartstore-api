@@ -107,7 +107,7 @@ class SubCategoryController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"name_en", "name_ar"},
+     *                 required={"name_en", "name_ar","description_en","description_ar","category_id"},
      *                 @OA\Property(property="name_en", type="string"),
      *                 @OA\Property(property="name_ar", type="string"),
      *                 @OA\Property(property="description_en", type="string"),
@@ -151,12 +151,13 @@ class SubCategoryController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
+     *                 required={"name_en", "name_ar","description_en","description_ar","category_id"},
      *                 @OA\Property(property="name_en", type="string"),
      *                 @OA\Property(property="name_ar", type="string"),
      *                 @OA\Property(property="description_en", type="string"),
      *                 @OA\Property(property="description_ar", type="string"),
-     *   @OA\Property(property="category_id", type="integer"),
      *                 @OA\Property(property="logo", type="file"),
+     *  @OA\Property(property="category_id", type="integer"),
      *                 @OA\Property(property="status", type="boolean")
      *             )
      *         )
