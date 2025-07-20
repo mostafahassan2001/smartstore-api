@@ -2924,7 +2924,7 @@
                     "SubCategory"
                 ],
                 "summary": "Get paginated list of SubCategory",
-                "operationId": "1533a1b87b1769cd5d8a7c573878e09e",
+                "operationId": "329bf50ac12550f84d6a70f7523dbffa",
                 "parameters": [
                     {
                         "name": "pageNumber",
@@ -2985,7 +2985,7 @@
                     "SubCategory"
                 ],
                 "summary": "Create new SubCategory",
-                "operationId": "c2fd1e63e232129a6719ca7fd47248a9",
+                "operationId": "596036cf3873c08f709d154b975e687b",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -3046,7 +3046,7 @@
                     "SubCategory"
                 ],
                 "summary": "Get single SubCategory by ID",
-                "operationId": "b1fe2b71f5feff68f0855f2a7dac173b",
+                "operationId": "0d0a401a16be23e3fc1631dfe2ea968f",
                 "parameters": [
                     {
                         "name": "id",
@@ -3078,7 +3078,7 @@
                     "SubCategory"
                 ],
                 "summary": "Update SubCategory",
-                "operationId": "01953f1e06e254b7fd386172ae28442f",
+                "operationId": "6520fbbeaa90154fa0109eeb72ce6664",
                 "parameters": [
                     {
                         "name": "id",
@@ -3153,7 +3153,7 @@
                     "SubCategory"
                 ],
                 "summary": "Delete SubCategory",
-                "operationId": "369227ce94804f23a3dabc77f4d0d7b9",
+                "operationId": "2b0128b464e15b8da69d359cf2900f0f",
                 "parameters": [
                     {
                         "name": "id",
@@ -3190,7 +3190,7 @@
                     "SubCategory"
                 ],
                 "summary": "Get SubCategory by category ID",
-                "operationId": "b8a4cabcff7a8533f9b6eafc21089f43",
+                "operationId": "0ee3708bf75bc4b83569995554859759",
                 "parameters": [
                     {
                         "name": "categoryId",
