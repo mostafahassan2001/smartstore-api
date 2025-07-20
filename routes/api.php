@@ -27,12 +27,12 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
 
     /**
-     * RESTful Resources
+     * RESTful Resourcess
      */
     Route::apiResources([
         'products'      => ProductController::class,
         'categories'    => CategoryController::class,
-        'subcategories' => SubcategoryController::class, // ✅ Added
+        'Subcategories' => SubCategoriesController::class, // ✅ Added
         'brands'        => BrandController::class,
         'cart'          => CartController::class,
         'orders'        => OrderController::class,
