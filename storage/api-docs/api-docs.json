@@ -2921,16 +2921,14 @@
         "/api/subcategories": {
             "get": {
                 "tags": [
-                    "SubCategory"
+                    "SubCategories"
                 ],
-                "summary": "Get paginated list of SubCategory",
+                "summary": "Get paginated list of SubCategories",
                 "operationId": "1533a1b87b1769cd5d8a7c573878e09e",
                 "parameters": [
                     {
                         "name": "pageNumber",
                         "in": "query",
-                        "description": "Page number",
-                        "required": false,
                         "schema": {
                             "type": "integer",
                             "default": 1
@@ -2939,8 +2937,6 @@
                     {
                         "name": "pageSize",
                         "in": "query",
-                        "description": "Number of items per page",
-                        "required": false,
                         "schema": {
                             "type": "integer",
                             "default": 10
@@ -2949,7 +2945,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response with paginated SubCategory",
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2969,267 +2965,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/SubCategory"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "SubCategory"
-                ],
-                "summary": "Create new SubCategory",
-                "operationId": "c2fd1e63e232129a6719ca7fd47248a9",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [
-                                    "name_en",
-                                    "name_ar",
-                                    "category_id",
-                                    "description_en",
-                                    "description_ar"
-                                ],
-                                "properties": {
-                                    "name_en": {
-                                        "type": "string"
-                                    },
-                                    "name_ar": {
-                                        "type": "string"
-                                    },
-                                    "description_en": {
-                                        "type": "string"
-                                    },
-                                    "description_ar": {
-                                        "type": "string"
-                                    },
-                                    "category_id": {
-                                        "type": "integer"
-                                    },
-                                    "status": {
-                                        "type": "boolean"
-                                    },
-                                    "logo": {
-                                        "type": "file"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "SubCategory created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SubCategory"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/subcategories/{id}": {
-            "get": {
-                "tags": [
-                    "SubCategory"
-                ],
-                "summary": "Get single SubCategory by ID",
-                "operationId": "b1fe2b71f5feff68f0855f2a7dac173b",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "SubCategory details",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SubCategory"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "SubCategory not found"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "SubCategory"
-                ],
-                "summary": "Update SubCategory",
-                "operationId": "01953f1e06e254b7fd386172ae28442f",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [
-                                    "name_en",
-                                    "name_ar",
-                                    "category_id",
-                                    "description_en",
-                                    "description_ar"
-                                ],
-                                "properties": {
-                                    "name_en": {
-                                        "type": "string"
-                                    },
-                                    "name_ar": {
-                                        "type": "string"
-                                    },
-                                    "description_en": {
-                                        "type": "string"
-                                    },
-                                    "description_ar": {
-                                        "type": "string"
-                                    },
-                                    "category_id": {
-                                        "type": "integer"
-                                    },
-                                    "status": {
-                                        "type": "boolean"
-                                    },
-                                    "logo": {
-                                        "type": "file"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "SubCategory updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "SubCategory updated"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "SubCategory"
-                ],
-                "summary": "Delete SubCategory",
-                "operationId": "369227ce94804f23a3dabc77f4d0d7b9",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "SubCategory deleted",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "SubCategory deleted"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/subcategories/category/{categoryId}": {
-            "get": {
-                "tags": [
-                    "SubCategory"
-                ],
-                "summary": "Get SubCategory by category ID",
-                "operationId": "b8a4cabcff7a8533f9b6eafc21089f43",
-                "parameters": [
-                    {
-                        "name": "categoryId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Paginated SubCategory by category",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "pageNumber": {
-                                            "type": "integer"
-                                        },
-                                        "pageSize": {
-                                            "type": "integer"
-                                        },
-                                        "totalPageNumber": {
-                                            "type": "integer"
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/SubCategory"
+                                                "$ref": "#/components/schemas/SubCategories"
                                             }
                                         }
                                     },
@@ -3563,8 +3299,8 @@
                 },
                 "type": "object"
             },
-            "SubCategory": {
-                "title": "Sub Category",
+            "SubCategories": {
+                "title": "SubCategories",
                 "required": [
                     "id",
                     "name_en",
@@ -3725,8 +3461,8 @@
             "description": "Reviews"
         },
         {
-            "name": "SubCategory",
-            "description": "SubCategory"
+            "name": "SubCategories",
+            "description": "SubCategories"
         }
     ]
 }
