@@ -163,7 +163,7 @@ class ProductController extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Success",)
+     *  @OA\Response(response=200, description="Product updata")
      * )
      */
     public function update(Request $request, $id)
@@ -207,7 +207,7 @@ class ProductController extends Controller
         }
 
         $product->update($validated);
-        return response()->json($product);
+        return response()->json(['message' => 'Product update']);
     }
 
     /**
