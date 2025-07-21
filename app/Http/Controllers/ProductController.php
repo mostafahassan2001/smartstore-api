@@ -142,7 +142,7 @@ class ProductController extends Controller
      *     tags={"Products"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\RequestBody(
-     *         required=true,
+     *         required=false,
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *           @OA\Schema(
