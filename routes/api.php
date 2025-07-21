@@ -61,6 +61,7 @@ Route::middleware('auth:api')->group(function () {
      */
     Route::get('product/category/{categoryId}', [ProductController::class, 'getByCategory']);
     Route::get('product/brand/{brandId}', [ProductController::class, 'getByBrand']);
+    Route::put('products/{id}', [ProductController::class, 'update']);
 
     /**
      * Subcategory Extra Route ✅
