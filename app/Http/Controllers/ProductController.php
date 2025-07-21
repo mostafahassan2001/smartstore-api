@@ -163,7 +163,7 @@ class ProductController extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Product updated", @OA\JsonContent(ref="#/components/schemas/Product"))
+     *     @OA\Response(response=200, description="Success",)
      * )
      */
     public function update(Request $request, $id)

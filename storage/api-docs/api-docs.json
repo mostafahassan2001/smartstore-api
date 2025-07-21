@@ -2561,14 +2561,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Product updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Product"
-                                }
-                            }
-                        }
+                        "description": "Success"
                     }
                 }
             },
