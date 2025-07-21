@@ -174,8 +174,8 @@ class ProductController extends Controller
         }
 
     $validated = $request->validate([
-    'name_en' => 'required|string',
-    'name_ar' => 'required|string',
+    'name_en' => 'sometimes|required|string',
+    'name_ar' => 'sometimes|required|string',
     'description_en' => 'required|string',
     'description_ar' => 'required|string',
     'price' => 'required|numeric|min:0',
