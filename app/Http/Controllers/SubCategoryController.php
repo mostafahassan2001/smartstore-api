@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Storage;
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="name_en", type="string", example="Nike"),
  *     @OA\Property(property="name_ar", type="string", example="نايك"),
- *     @OA\Property(property="description_en", type="string", example="American sportswear brand"),
+ *     @OA\Property(property="description_en", type="string", example="American sportswear subcategory"),
  *     @OA\Property(property="description_ar", type="string", example="علامة تجارية أمريكية للملابس الرياضية"),
- *     @OA\Property(property="logo", type="string", example="brands/nike.png"),
+ *     @OA\Property(property="logo", type="string", example="subcategorys/nike.png"),
  *  @OA\Property(property="category_id", type="integer", example=2),
  *     @OA\Property(property="status", type="boolean", example=true),
  *     @OA\Property(property="created_at", type="string", format="date-time"),
@@ -100,7 +100,7 @@ class SubCategoryController extends Controller
     /**
      * @OA\Post(
      *     path="/api/subcategories",
-     *     summary="Create a new brand",
+     *     summary="Create a new subcategory",
      *     tags={"SubCategories"},
      *     @OA\RequestBody(
      *         required=true,
@@ -190,7 +190,7 @@ class SubCategoryController extends Controller
             $validated['logo'] = $request->file('logo')->store('subcategories', 'public');
         }
 
-        $brand->update($validated);
+        $subcategory->update($validated);
         return response()->json($subcategories);
     }
 
