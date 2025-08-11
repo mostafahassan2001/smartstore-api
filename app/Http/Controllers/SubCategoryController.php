@@ -166,33 +166,34 @@ class SubCategoryController extends Controller
      *     @OA\Response(response=404, description="subcategories not found")
      * )
      */
-    public function update(Request $request, $id)
-    {
-        $subcategories = SubCategory::find($id);
-        if (!$subcategories) {
-            return response()->json(['message' => 'subcategories not found'], 404);
-        }
-
-        $validated = $request->validate([
-            'name_en' => 'required|string',
-            'name_ar' => 'required|string',
-            'description_en' => 'required|string',
-            'description_ar' => 'required|string',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
-               'category_id' => 'required|exists:categories,id',
-            'status' => 'boolean',
-        ]);
-
-        if ($request->hasFile('logo')) {
-            if ($subcategories->logo) {
-                Storage::disk('public')->delete($subcategories->logo);
-            }
-            $validated['logo'] = $request->file('logo')->store('subcategories', 'public');
-        }
-
-        $subcategory->update($validated);
-        return response()->json($subcategories);
+   public function update(Request $request, $id)
+{
+    $subcategory = SubCategory::find($id); // خليته اسم واحد consistent
+    if (!$subcategory) {
+        return response()->json(['message' => 'SubCategory not found'], 404);
     }
+
+    $validated = $request->validate([
+        'name_en' => 'required|string',
+        'name_ar' => 'required|string',
+        'description_en' => 'required|string',
+        'description_ar' => 'required|string',
+        'logo' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+        'category_id' => 'required|exists:categories,id',
+        'status' => 'boolean',
+    ]);
+
+    if ($request->hasFile('logo')) {
+        if ($subcategory->logo) {
+            Storage::disk('public')->delete($subcategory->logo);
+        }
+        $validated['logo'] = $request->file('logo')->store('subcategories', 'public');
+    }
+
+    $subcategory->update($validated);
+
+    return response()->json($subcategory);
+}
 
     /**
      * @OA\Delete(
