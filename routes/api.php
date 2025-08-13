@@ -21,18 +21,24 @@ use App\Http\Controllers\AddressController;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
+// ✅ Public fetch-only routes (no token needed)
+Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
+Route::apiResource('brands', BrandController::class)->only(['index', 'show']);
+Route::apiResource('subcategories', SubCategoryController::class)->only(['index', 'show']);
+
 /**
  * Authenticated Routes
  */
 Route::middleware('auth:api')->group(function () {
 
     /**
-     * RESTful Resourcess
+     * Full RESTful Resources (token required)
      */
     Route::apiResources([
         'products'      => ProductController::class,
         'categories'    => CategoryController::class,
-        'subcategories' => SubCategoryController::class, // ✅ Added
+        'subcategories' => SubCategoryController::class,
         'brands'        => BrandController::class,
         'cart'          => CartController::class,
         'orders'        => OrderController::class,
@@ -66,7 +72,7 @@ Route::middleware('auth:api')->group(function () {
     /**
      * Subcategory Extra Route ✅
      */
-Route::get('SubCategories/category/{categoryId}', [SubCategoryController::class, 'getByCategory']);
+    Route::get('SubCategories/category/{categoryId}', [SubCategoryController::class, 'getByCategory']);
 
     /**
      * Order Extra Routes
