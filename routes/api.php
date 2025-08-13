@@ -21,10 +21,11 @@ use App\Http\Controllers\AddressController;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
-// Fetch-only public routes
+// Public fetch routes
 Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('brands', BrandController::class)->only(['index', 'show']);
+Route::apiResource('banners', BannerController::class)->only(['index', 'show']);
 Route::apiResource('subcategories', SubCategoryController::class)->only(['index', 'show']);
 Route::get('subcategories/category/{categoryId}', [SubCategoryController::class, 'getByCategory']);
 
@@ -32,11 +33,17 @@ Route::get('subcategories/category/{categoryId}', [SubCategoryController::class,
  * Authenticated Routes (Token Required)
  */
 Route::middleware('auth:api')->group(function () {
+    // Full CRUD for these entities
+    Route::apiResource('products', ProductController::class)->except(['index', 'show']);
+    Route::apiResource('categories', CategoryController::class)->except(['index', 'show']);
+    Route::apiResource('brands', BrandController::class)->except(['index', 'show']);
+    Route::apiResource('banners', BannerController::class)->except(['index', 'show']);
+    Route::apiResource('subcategories', SubCategoryController::class)->except(['index', 'show']);
+
     Route::apiResources([
         'cart'          => CartController::class,
         'orders'        => OrderController::class,
         'reviews'       => ReviewController::class,
-        'banners'       => BannerController::class,
         'coupons'       => CouponController::class,
         'discounts'     => DiscountController::class,
         'address'       => AddressController::class,
