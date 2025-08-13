@@ -1229,7 +1229,7 @@
                 ],
                 "summary": "Get all categories",
                 "description": "Get all categories",
-                "operationId": "86d2cf3ac446f9d63b34e0f3a602b6a0",
+                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
                 "parameters": [
                     {
                         "name": "pageSize",
