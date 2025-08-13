@@ -1229,7 +1229,7 @@
                 ],
                 "summary": "Get all categories",
                 "description": "Get all categories",
-                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
+                "operationId": "86d2cf3ac446f9d63b34e0f3a602b6a0",
                 "parameters": [
                     {
                         "name": "pageSize",
@@ -1492,281 +1492,6 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Category deleted"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/coupons": {
-            "get": {
-                "tags": [
-                    "Coupons"
-                ],
-                "summary": "Get all coupons",
-                "description": "Get all coupons",
-                "operationId": "de1c8db4ca4b3c683e03dffd02a9f448",
-                "responses": {
-                    "200": {
-                        "description": "List of coupons",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Coupon"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Coupons"
-                ],
-                "summary": "Create a new coupon",
-                "description": "Store new coupon",
-                "operationId": "f3ffee4301fb5522bc31d0dd443a07e8",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "code",
-                                    "discount_type",
-                                    "discount_value"
-                                ],
-                                "properties": {
-                                    "code": {
-                                        "type": "string",
-                                        "example": "SAVE10"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "10% off your order"
-                                    },
-                                    "discount_type": {
-                                        "type": "string",
-                                        "enum": [
-                                            "percentage",
-                                            "fixed"
-                                        ],
-                                        "example": "percentage"
-                                    },
-                                    "discount_value": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 10
-                                    },
-                                    "max_uses": {
-                                        "type": "integer",
-                                        "example": 100
-                                    },
-                                    "start_date": {
-                                        "type": "string",
-                                        "format": "date-time",
-                                        "example": "2025-07-01T00:00:00Z"
-                                    },
-                                    "end_date": {
-                                        "type": "string",
-                                        "format": "date-time",
-                                        "example": "2025-08-01T00:00:00Z"
-                                    },
-                                    "is_active": {
-                                        "type": "boolean",
-                                        "example": true
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Coupon created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Coupon"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/coupons/{id}": {
-            "put": {
-                "tags": [
-                    "Coupons"
-                ],
-                "summary": "Update a coupon",
-                "description": "Update coupon",
-                "operationId": "057e26e126d3c2474c93f0ab7047a507",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "code": {
-                                        "type": "string",
-                                        "example": "SAVE15"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "15% off your order"
-                                    },
-                                    "discount_type": {
-                                        "type": "string",
-                                        "enum": [
-                                            "percentage",
-                                            "fixed"
-                                        ],
-                                        "example": "fixed"
-                                    },
-                                    "discount_value": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 15
-                                    },
-                                    "max_uses": {
-                                        "type": "integer",
-                                        "example": 50
-                                    },
-                                    "start_date": {
-                                        "type": "string",
-                                        "format": "date-time",
-                                        "example": "2025-07-10T00:00:00Z"
-                                    },
-                                    "end_date": {
-                                        "type": "string",
-                                        "format": "date-time",
-                                        "example": "2025-08-10T00:00:00Z"
-                                    },
-                                    "is_active": {
-                                        "type": "boolean",
-                                        "example": false
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Coupon updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Coupon"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Coupon not found"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Coupons"
-                ],
-                "summary": "Delete a coupon",
-                "description": "Delete coupon",
-                "operationId": "17bea67ca5229520f7a6975f625ca627",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Coupon deleted"
-                    },
-                    "404": {
-                        "description": "Coupon not found"
-                    }
-                }
-            }
-        },
-        "/api/coupons/check": {
-            "get": {
-                "tags": [
-                    "Coupons"
-                ],
-                "summary": "Check if a coupon is valid",
-                "description": "Check coupon validity",
-                "operationId": "1bc7cf46e6eec6f78cd4cd732618fd51",
-                "parameters": [
-                    {
-                        "name": "code",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "SAVE10"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Coupon is valid",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "valid": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "discount_type": {
-                                            "type": "string",
-                                            "example": "percentage"
-                                        },
-                                        "discount_value": {
-                                            "type": "number",
-                                            "example": 10
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid or expired coupon",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Invalid or expired coupon"
                                         }
                                     },
                                     "type": "object"
@@ -3015,7 +2740,7 @@
                 "tags": [
                     "SubCategories"
                 ],
-                "summary": "Create a new brand",
+                "summary": "Create a new subcategory",
                 "operationId": "596036cf3873c08f709d154b975e687b",
                 "requestBody": {
                     "required": true,
@@ -3406,9 +3131,13 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "name": {
+                    "name_en": {
                         "type": "string",
                         "example": "Clothing"
+                    },
+                    "name_ar": {
+                        "type": "string",
+                        "example": "ملابس"
                     },
                     "description_en": {
                         "type": "string",
@@ -3433,63 +3162,6 @@
                     "updated_at": {
                         "type": "string",
                         "format": "date-time"
-                    }
-                },
-                "type": "object"
-            },
-            "Coupon": {
-                "required": [
-                    "code",
-                    "discount_type",
-                    "discount_value"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "code": {
-                        "type": "string",
-                        "example": "SAVE10"
-                    },
-                    "description": {
-                        "type": "string",
-                        "example": "10% off your order"
-                    },
-                    "discount_type": {
-                        "type": "string",
-                        "enum": [
-                            "percentage",
-                            "fixed"
-                        ],
-                        "example": "percentage"
-                    },
-                    "discount_value": {
-                        "type": "number",
-                        "format": "float",
-                        "example": 10
-                    },
-                    "max_uses": {
-                        "type": "integer",
-                        "example": 100
-                    },
-                    "used_count": {
-                        "type": "integer",
-                        "example": 10
-                    },
-                    "start_date": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-07-01T00:00:00Z"
-                    },
-                    "end_date": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-08-01T00:00:00Z"
-                    },
-                    "is_active": {
-                        "type": "boolean",
-                        "example": true
                     }
                 },
                 "type": "object"
@@ -3617,7 +3289,7 @@
                     },
                     "description_en": {
                         "type": "string",
-                        "example": "American sportswear brand"
+                        "example": "American sportswear subcategory"
                     },
                     "description_ar": {
                         "type": "string",
@@ -3625,7 +3297,7 @@
                     },
                     "logo": {
                         "type": "string",
-                        "example": "brands/nike.png"
+                        "example": "subcategorys/nike.png"
                     },
                     "category_id": {
                         "type": "integer",
@@ -3746,10 +3418,6 @@
         {
             "name": "Categories",
             "description": "Categories"
-        },
-        {
-            "name": "Coupons",
-            "description": "Coupons"
         },
         {
             "name": "Discounts",

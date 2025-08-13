@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Storage;
  *     type="object",
  *     title="Category",
  *     @OA\Property(property="id", type="integer", example=1),
- *     @OA\Property(property="name", type="string", example="Clothing"),
+ *     @OA\Property(property="name_en", type="string", example="Clothing"),
+ *     @OA\Property(property="name_ar", type="string", example="ملابس"),
  *     @OA\Property(property="description_en", type="string", example="American sportswear brand"),
  *     @OA\Property(property="description_ar", type="string", example="علامة تجارية أمريكية للملابس الرياضية"),
  *     @OA\Property(property="logo", type="string", example="brands/nike.png"),
@@ -59,6 +60,11 @@ class CategoryController extends Controller
  * )
 
      */
+      public function __construct()
+    {
+        // السماح بالوصول لـ index و show بدون توكن
+        $this->middleware('auth:api')->except(['index', 'show']);
+    }
    public function index(Request $request)
     {
         $pageSize = $request->input('pageSize', 10);
