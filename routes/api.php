@@ -16,30 +16,23 @@ use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\AddressController;
 
 /**
- * Public Routes
+ * Public Routes (No Token)
  */
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
-// ✅ Public fetch-only routes (no token needed)
+// Fetch-only public routes
 Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('brands', BrandController::class)->only(['index', 'show']);
 Route::apiResource('subcategories', SubCategoryController::class)->only(['index', 'show']);
+Route::get('subcategories/category/{categoryId}', [SubCategoryController::class, 'getByCategory']);
 
 /**
- * Authenticated Routes
+ * Authenticated Routes (Token Required)
  */
 Route::middleware('auth:api')->group(function () {
-
-    /**
-     * Full RESTful Resources (token required)
-     */
     Route::apiResources([
-        'products'      => ProductController::class,
-        'categories'    => CategoryController::class,
-        'subcategories' => SubCategoryController::class,
-        'brands'        => BrandController::class,
         'cart'          => CartController::class,
         'orders'        => OrderController::class,
         'reviews'       => ReviewController::class,
@@ -49,51 +42,32 @@ Route::middleware('auth:api')->group(function () {
         'address'       => AddressController::class,
     ]);
 
-    /**
-     * Auth Actions
-     */
+    // Auth Actions
     Route::get('/refreshToken', [AuthController::class, 'refreshToken']);
 
-    /**
-     * Cart Extra Routes
-     */
+    // Cart Extra Routes
     Route::delete('cart/clear', [CartController::class, 'clear']);
     Route::post('cart/discount', [CartController::class, 'applyDiscount']);
     Route::delete('cart/discount', [CartController::class, 'removeDiscount']);
     Route::get('cart/total', [CartController::class, 'getTotal']);
 
-    /**
-     * Product Extra Routes
-     */
+    // Product Extra Routes
     Route::get('product/category/{categoryId}', [ProductController::class, 'getByCategory']);
     Route::get('product/brand/{brandId}', [ProductController::class, 'getByBrand']);
     Route::put('products/{id}', [ProductController::class, 'update']);
 
-    /**
-     * Subcategory Extra Route ✅
-     */
-    Route::get('SubCategories/category/{categoryId}', [SubCategoryController::class, 'getByCategory']);
-
-    /**
-     * Order Extra Routes
-     */
+    // Order Extra Routes
     Route::put('order/{id}/tracking', [OrderController::class, 'updateTracking']);
     Route::get('order/{id}', [OrderController::class, 'show']);
 
-    /**
-     * Address Extra Routes
-     */
+    // Address Extra Routes
     Route::put('address/{id}/set-default', [AddressController::class, 'setDefault']);
     Route::get('address/{id}', [AddressController::class, 'show']);
 
-    /**
-     * Review Show
-     */
+    // Review Show
     Route::get('reviews/{id}', [ReviewController::class, 'show']);
 
-    /**
-     * Discount Show
-     */
+    // Discount Show
     Route::get('discounts/{id}', [DiscountController::class, 'show']);
 });
 
